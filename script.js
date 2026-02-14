@@ -619,6 +619,7 @@ function initFeatures() {
   initProgress();
   initReport();
   initAdmin();
+  initMusic();
   
   console.log('✅ 모든 기능 초기화 완료');
 }
@@ -1302,6 +1303,137 @@ function showNotification(msg) {
   notif.classList.add('show');
   setTimeout(() => notif.classList.remove('show'), 2000);
 }
+
+// ============================================
+// 배경음악 플레이어 (다중 곡 지원)
+// ============================================
+
+const musicPlaylist = [
+  { title: '🌅 Dawn of Organa (Opening)', file: 'audio/01_dawn_of_organa_opening.mp3' },
+  { title: '⚔️ Dawn of Organa (Main Theme)', file: 'audio/02_dawn_of_organa_main.mp3' },
+  { title: '🔥 Kalaragon\'s Wrath (Anim)', file: 'audio/03_kalaragons_wrath_anim.mp3' },
+  { title: '🐉 Kalaragon\'s Wrath (OST)', file: 'audio/04_kalaragons_wrath_ost.mp3' },
+  { title: '👹 Kalaragon\'s Wrath', file: 'audio/05_kalaragons_wrath.mp3' },
+  { title: '🌊 The Castaway (Ver.1)', file: 'audio/06_the_castaway_v1.mp3' },
+  { title: '🏝️ The Castaway (Ver.2)', file: 'audio/07_the_castaway_v2.mp3' },
+  { title: '🎌 The Castaway (日本語)', file: 'audio/08_the_castaway_jp.mp3' }
+];
+
+let currentTrack = 0;
+let isPlaying = false;
+
+function initMusic() {
+  const bgm = document.getElementById('bgm');
+  const musicBtn = document.getElementById('musicToggle');
+  const musicPanel = document.getElementById('musicPanel');
+  
+  if (!bgm || !musicBtn) {
+    console.log('🎵 음악 요소 없음');
+    return;
+  }
+
+  bgm.volume = 0.3;
+
+  function playTrack(index) {
+    currentTrack = index;
+    bgm.src = musicPlaylist[index].file;
+    bgm.play().then(() => {
+      isPlaying = true;
+      musicBtn.textContent = '🔊';
+      musicBtn.classList.add('playing');
+      document.querySelectorAll('.music-item').forEach((item, i) => {
+        item.classList.toggle('active', i === currentTrack);
+      });
+      const nowPlaying = document.querySelector('.music-now-playing');
+      if (nowPlaying) {
+        nowPlaying.textContent = '🎵 ' + musicPlaylist[currentTrack].title;
+      }
+      const playPauseBtn = document.querySelector('.music-control-btn.play-pause');
+      if (playPauseBtn) playPauseBtn.textContent = '⏸️';
+    }).catch(err => {
+      console.log('재생 실패:', err);
+    });
+  }
+
+  bgm.addEventListener('ended', () => {
+    currentTrack++;
+    if (currentTrack >= musicPlaylist.length) {
+      currentTrack = 0;
+    }
+    playTrack(currentTrack);
+  });
+
+  musicBtn.addEventListener('click', () => {
+    if (musicPanel) {
+      musicPanel.classList.toggle('active');
+    }
+  });
+
+  const closeBtn = document.querySelector('.music-panel-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      musicPanel.classList.remove('active');
+    });
+  }
+
+  const playPauseBtn = document.querySelector('.music-control-btn.play-pause');
+  if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        bgm.pause();
+        isPlaying = false;
+        musicBtn.textContent = '🔇';
+        musicBtn.classList.remove('playing');
+        playPauseBtn.textContent = '▶️';
+      } else {
+        if (!bgm.src || bgm.src === '') {
+          playTrack(currentTrack);
+        } else {
+          bgm.play();
+          isPlaying = true;
+          musicBtn.textContent = '🔊';
+          musicBtn.classList.add('playing');
+          playPauseBtn.textContent = '⏸️';
+        }
+      }
+    });
+  }
+
+  const prevBtn = document.querySelector('.music-control-btn.prev');
+  const nextBtn = document.querySelector('.music-control-btn.next');
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      currentTrack--;
+      if (currentTrack < 0) currentTrack = musicPlaylist.length - 1;
+      playTrack(currentTrack);
+    });
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      currentTrack++;
+      if (currentTrack >= musicPlaylist.length) currentTrack = 0;
+      playTrack(currentTrack);
+    });
+  }
+
+  const volumeSlider = document.querySelector('.music-volume input');
+  if (volumeSlider) {
+    volumeSlider.value = bgm.volume * 100;
+    volumeSlider.addEventListener('input', (e) => {
+      bgm.volume = e.target.value / 100;
+    });
+  }
+
+  document.querySelectorAll('.music-item').forEach((item, i) => {
+    item.addEventListener('click', () => playTrack(i));
+  });
+
+  console.log('🎵 음악 컨트롤 초기화 완료');
+}
+
+
 
 // ============================================
 // 페이지 로드
