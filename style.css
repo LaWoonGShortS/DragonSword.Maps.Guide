@@ -1106,29 +1106,217 @@ body {
   50% { opacity: 0.3; }
 }
 
-/* 반응형 */
-@media (max-width: 768px) {
-  .splash-content {
-    padding-bottom: 40px;
+/* ============================================
+   음악 플레이어 패널
+   ============================================ */
+
+.music-panel {
+  position: fixed;
+  bottom: 70px;
+  left: calc(50% + 80px);
+  width: 280px;
+  background: linear-gradient(135deg, rgba(20, 0, 40, 0.98), rgba(40, 0, 60, 0.98));
+  border: 2px solid #00ffff;
+  border-radius: 15px;
+  padding: 15px;
+  z-index: 10001;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+  backdrop-filter: blur(15px);
+  display: none;
+  animation: slideUp 0.3s ease;
+}
+
+.music-panel.active {
+  display: block;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.music-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.music-panel-header span {
+  color: #00ffff;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.music-panel-close {
+  background: none;
+  border: none;
+  color: #ff00ff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.music-panel-close:hover {
+  transform: scale(1.2);
+}
+
+.music-now-playing {
+  color: #ff00ff;
+  font-size: 13px;
+  text-align: center;
+  padding: 8px;
+  background: rgba(255, 0, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.music-list {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.music-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.music-item:hover {
+  background: rgba(0, 255, 255, 0.2);
+}
+
+.music-item.active {
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.3));
+  border-left: 3px solid #00ffff;
+}
+
+.music-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.music-control-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+  border: 2px solid #00ffff;
+  color: #00ffff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.music-control-btn:hover {
+  background: linear-gradient(135deg, #00ffff, #ff00ff);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.music-volume {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #00ffff;
+}
+
+.music-volume input[type="range"] {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  appearance: none;
+  cursor: pointer;
+}
+
+.music-volume input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00ffff, #ff00ff);
+  cursor: pointer;
+}
+
+/* ============================================
+   음악 버튼
+   ============================================ */
+
+.music-btn {
+  position: fixed;
+  bottom: 8px;
+  left: calc(50% + 160px);
+  z-index: 10000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a0a2e, #2d1b4e);
+  border: 3px solid #00ffff;
+  color: #00ffff;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  animation: musicBtnGlow 2s ease-in-out infinite;
+}
+
+@keyframes musicBtnGlow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.3);
+    border-color: #00ffff;
   }
-  
-  .splash-overlay {
-    margin: 0 20px;
-    padding: 25px 20px;
-  }
-  
-  .splash-title {
-    font-size: 28px;
-    letter-spacing: 5px;
-  }
-  
-  .splash-copyright {
-    font-size: 11px;
-  }
-  
-  .splash-press-key {
-    font-size: 11px;
+  50% { 
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.4);
+    border-color: #ff00ff;
   }
 }
 
+.music-btn:hover {
+  transform: scale(1.15);
+}
+
+.music-btn.playing {
+  border-color: #ff00ff;
+  color: #ff00ff;
+  animation: musicPlaying 0.8s ease-in-out infinite;
+}
+
+@keyframes musicPlaying {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* ============================================
+   반응형 (음악 플레이어)
+   ============================================ */
+
+@media (max-width: 768px) {
+  .music-panel {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    bottom: 65px;
+  }
+  
+  .music-btn {
+    left: calc(50% + 130px);
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+}
 
