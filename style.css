@@ -982,7 +982,7 @@ body {
 }
 
 /* ============================================
-   스플래시 화면
+   스플래시 화면 (게임 이미지 버전)
    ============================================ */
 
 .splash-screen {
@@ -991,18 +991,17 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #0a0a15 0%, #1a0a2e 50%, #0a0a15 100%);
   z-index: 99999;
   display: flex;
-  align-items: center;
+  align-items: flex-end;  /* 아래쪽 정렬 */
   justify-content: center;
+  background: #000;
   opacity: 1;
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: opacity 0.8s ease;
 }
 
 .splash-screen.fade-out {
   opacity: 0;
-  transform: scale(1.1);
   pointer-events: none;
 }
 
@@ -1011,8 +1010,53 @@ body {
 }
 
 .splash-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;  /* 아래쪽 정렬 */
+  justify-content: center;
+  padding-bottom: 80px;   /* 하단 여백 */
+}
+
+.splash-image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.splash-game-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;  /* 로고가 있는 위쪽 중앙 보이게 */
+  opacity: 0.9;
+  animation: zoomIn 20s ease-in-out infinite alternate;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+.splash-overlay {
+  position: relative;
+  z-index: 2;
   text-align: center;
+  padding: 30px 50px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
   animation: fadeInUp 1s ease;
+  max-width: 500px;
 }
 
 @keyframes fadeInUp {
@@ -1026,43 +1070,21 @@ body {
   }
 }
 
-.splash-logo {
-  font-size: 80px;
-  margin-bottom: 20px;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-}
-
 .splash-title {
-  font-size: 48px;
+  font-size: 36px;
   font-weight: bold;
-  background: linear-gradient(135deg, #ff00ff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 40px;
-  text-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
-  animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.5));
-  }
-  to {
-    filter: drop-shadow(0 0 40px rgba(0, 255, 255, 0.8));
-  }
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+               0 0 40px rgba(0, 200, 255, 0.5);
+  margin-bottom: 20px;
+  letter-spacing: 8px;
 }
 
 .splash-copyright {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 16px;
-  line-height: 1.8;
-  margin-bottom: 50px;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
 
 .splash-copyright strong {
@@ -1071,12 +1093,12 @@ body {
 
 .splash-press-key {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
+  font-size: 13px;
   animation: blink 1.5s ease-in-out infinite;
-  padding: 15px 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 30px;
-  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 @keyframes blink {
@@ -1084,106 +1106,29 @@ body {
   50% { opacity: 0.3; }
 }
 
-/* ============================================
-   반응형
-   ============================================ */
-
+/* 반응형 */
 @media (max-width: 768px) {
-  .mode-switch {
-    top: 10px;
-    left: 10px;
-    flex-direction: column;
-    gap: 5px;
-    padding: 8px;
-  }
-
-  .mode-btn {
-    padding: 8px 15px;
-    font-size: 12px;
-  }
-
-  .progress-panel {
-    top: 100px;
-    left: 10px;
-    width: calc(100% - 20px);
-    max-height: 250px;
-  }
-
-  .search-box {
-    top: 10px;
-    right: 10px;
-    width: 180px;
-    padding: 12px;
-  }
-
-  .filter-panel {
-    top: 85px;
-    right: 10px;
-    width: 180px;
-    grid-template-columns: 1fr;
-    padding: 12px;
-  }
-
-  .filter-btn[data-type="all"] {
-    grid-column: span 1;
-  }
-
-  .report-panel,
-  .admin-panel {
-    bottom: 70px;
-    right: 10px;
-    left: 10px;
-    width: calc(100% - 20px);
-    max-height: calc(100vh - 400px);
-  }
-
-  .leaflet-control-zoom {
-    margin-bottom: 80px !important;
+  .splash-content {
+    padding-bottom: 40px;
   }
   
-  .leaflet-control-zoom a {
-    width: 35px !important;
-    height: 35px !important;
-    line-height: 35px !important;
-    font-size: 18px !important;
-  }
-
-  .left-sidebar,
-  .right-sidebar {
-    max-width: 280px;
-  }
-  
-  .right-sidebar {
-    width: 280px;
-  }
-  
-  .toggle-all-btn {
-    width: 35px;
-    height: 60px;
-  }
-  
-  .filter-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .filter-grid .filter-btn[data-type="all"] {
-    grid-column: span 1;
-  }
-
-  .splash-logo {
-    font-size: 60px;
+  .splash-overlay {
+    margin: 0 20px;
+    padding: 25px 20px;
   }
   
   .splash-title {
-    font-size: 32px;
+    font-size: 28px;
+    letter-spacing: 5px;
   }
   
   .splash-copyright {
-    font-size: 14px;
-    padding: 0 20px;
+    font-size: 11px;
   }
   
   .splash-press-key {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
+
+
