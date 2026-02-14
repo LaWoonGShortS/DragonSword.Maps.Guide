@@ -204,5 +204,43 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 
+<!-- 배경음악 플레이어 -->
+<audio id="bgm"preload="auto"></audio>
+
+<!-- 음악 플레이어 패널 -->
+<div id="musicPanel" class="music-panel">
+  <div class="music-panel-header">
+    <span>🎵 Music Player</span>
+    <button class="music-panel-close">✕</button>
+  </div>
+  <div class="music-now-playing">🎵 재생 대기중</div>
+  <div class="music-list">
+    <div class="music-item">🌅 Dawn of Organa (Opening)</div>
+    <div class="music-item">⚔️ Dawn of Organa (Main Theme)</div>
+    <div class="music-item">🔥 Kalaragon's Wrath (Anim)</div>
+    <div class="music-item">🐉 Kalaragon's Wrath (OST)</div>
+    <div class="music-item">👹 Kalaragon's Wrath</div>
+    <div class="music-item">🌊 The Castaway (Ver.1)</div>
+    <div class="music-item">🏝️ The Castaway (Ver.2)</div>
+    <div class="music-item">🎌 The Castaway (日本語)</div>
+  </div>
+  <div class="music-controls">
+    <button class="music-control-btn prev">⏮️</button>
+    <button class="music-control-btn play-pause">▶️</button>
+    <button class="music-control-btn next">⏭️</button>
+  </div>
+  <div class="music-volume">
+    <span>🔊</span>
+    <input type="range" min="0" max="100" value="30">
+  </div>
+</div>
+
+
+<!-- 음악 토글 버튼 -->
+<button id="musicToggle" class="music-btn" title="음악 플레이어">
+  🎵
+</button>
+
+
 </body>
 </html>
