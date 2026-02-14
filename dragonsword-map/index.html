@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>드래곤소드 맵 가이드 v3.3</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 스플래시 화면 -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-logo">🗺️</div>
+      <h1 class="splash-title">DragonSWORD Map</h1>
+      <div class="splash-copyright">
+        <p>Dragon Sword의 모든 이미지 저작권은</p>
+        <p><strong>Hound13</strong>과 <strong>Webzen</strong>에 있습니다.</p>
+        <br>
+        <p>이 맵은 Dragon Sword를 재밌게 플레이하는</p>
+        <p><strong style="color: #ff00ff;">"비밀리"</strong>가 제작했으며,</p>
+        <p>게임 개발사와는 관련이 없습니다.</p>
+      </div>
+      <div class="splash-press-key">
+        ⌨️ 아무 키나 누르거나 클릭하면 시작합니다
+      </div>
+    </div>
+  </div>
+
+  <!-- 제작자 워터마크 (유튜브 링크) -->
+  <a href="https://www.youtube.com/@LaWoonG" target="_blank" rel="noopener noreferrer"
+    style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 9999;
+    background: rgba(0,0,0,0.8); 
+    padding: 8px 25px; border-radius: 20px;
+    border: 2px solid rgba(255,0,255,0.6);
+    box-shadow: 0 0 20px rgba(255,0,255,0.4);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;"
+    onmouseover="this.style.background='linear-gradient(135deg, rgba(255,0,255,0.9), rgba(0,255,255,0.9))'; this.style.transform='translateX(-50%) scale(1.05)'; this.style.boxShadow='0 0 30px rgba(255,0,255,0.8)';"
+    onmouseout="this.style.background='rgba(0,0,0,0.8)'; this.style.transform='translateX(-50%) scale(1)'; this.style.boxShadow='0 0 20px rgba(255,0,255,0.4)';">
+    <span style="color: #00ffff; font-size: 12px; font-weight: bold; text-shadow: 0 0 10px rgba(0,255,255,0.5);">
+      🗺️ DragonSWORD Map by 
+    </span>
+    <span style="color: #ff00ff; font-size: 12px; font-weight: bold; text-shadow: 0 0 10px rgba(255,0,255,0.5);">
+      비밀리
+    </span>
+    <span style="color: white; font-size: 11px; margin-left: 5px;">
+      📺 @LaWoonG
+    </span>
+  </a>
+
+  <!-- 맵 컨테이너 -->
+  <div id="map"></div>
+
+  <!-- 전체 UI 토글 버튼 -->
+  <button id="toggleAllUI" class="toggle-all-btn" title="UI 숨기기/보이기">
+    <span class="toggle-icon">◀</span>
+  </button>
+
+  <!-- 왼쪽 사이드바 -->
+  <div class="left-sidebar" id="leftSidebar">
+    <!-- 모드 전환 -->
+    <div class="mode-switch">
+      <button class="mode-btn active" data-mode="user">👤 사용자</button>
+      <button class="mode-btn" data-mode="admin">⚙️ 관리자</button>
+    </div>
+
+    <!-- 진행도 패널 -->
+    <div class="panel collapsible" id="progressPanel">
+      <div class="panel-header" onclick="togglePanel('progressPanel')">
+        <span>📊 진행도</span>
+        <span class="panel-toggle">▼</span>
+      </div>
+      <div class="panel-content">
+        <div id="progressItems"></div>
+        <button id="resetAll" class="reset-all-btn">🔄 전체 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 오른쪽 사이드바 -->
+  <div class="right-sidebar" id="rightSidebar">
+    <!-- 검색 패널 -->
+    <div class="panel collapsible" id="searchPanel">
+      <div class="panel-header" onclick="togglePanel('searchPanel')">
+        <span>🔍 위치 검색</span>
+        <span class="panel-toggle">▼</span>
+      </div>
+      <div class="panel-content">
+        <input type="text" id="searchInput" placeholder="검색어 입력..." class="search-input">
+        <div id="searchResults" class="search-results"></div>
+      </div>
+    </div>
+
+    <!-- 필터 패널 -->
+    <div class="panel collapsible" id="filterPanel">
+      <div class="panel-header" onclick="togglePanel('filterPanel')">
+        <span>🎯 필터</span>
+        <span class="panel-toggle">▼</span>
+      </div>
+      <div class="panel-content">
+        <div class="filter-grid">
+          <button class="filter-btn" data-type="all">전체</button>
+          <button class="filter-btn" data-type="아">🧰 보물상자</button>
+          <button class="filter-btn" data-type="도">🦫 마멋왕</button>
+          <button class="filter-btn" data-type="퀘">📜 지역의뢰</button>
+          <button class="filter-btn" data-type="달">🔒 봉인된상자</button>
+          <button class="filter-btn" data-type="퍼">🧩 퍼즐</button>
+          <button class="filter-btn" data-type="새">🪺 새알</button>
+          <button class="filter-btn" data-type="토">👹 돌발임무</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 사용자 제보 패널 -->
+    <div class="panel collapsible" id="reportPanel">
+      <div class="panel-header" onclick="togglePanel('reportPanel')">
+        <span>📍 새 좌표 제보</span>
+        <span class="panel-toggle">▼</span>
+      </div>
+      <div class="panel-content">
+        <label class="report-label">타입</label>
+        <select id="reportType" class="report-input">
+          <option value="아">🧰 보물상자</option>
+          <option value="도">🦫 마멋왕</option>
+          <option value="토">👹 돌발임무</option>
+          <option value="퀘">📜 지역의뢰</option>
+          <option value="달">🔒 봉인된상자</option>
+          <option value="퍼">🧩 퍼즐</option>
+          <option value="새">🪺 새알</option>
+        </select>
+
+        <label class="report-label">설명</label>
+        <input type="text" id="reportComment" class="report-input" placeholder="예: 성벽 위">
+
+        <label class="report-label">좌표 (맵 클릭)</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="reportX" class="report-coord" placeholder="X" readonly>
+          <input type="text" id="reportY" class="report-coord" placeholder="Y" readonly>
+        </div>
+
+        <button id="addReport" class="report-btn">➕ 리스트에 추가</button>
+
+        <div class="report-guide">💡 여러 개 추가 후 한 번에 복사하세요</div>
+
+        <div id="reportList" class="report-list"></div>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button id="copyAllReport" class="report-btn" style="flex: 1;">📋 전체 복사</button>
+          <button id="clearReport" class="report-btn" style="flex: 1; background: linear-gradient(135deg, #ff6b6b, #ff0000);">🔄 초기화</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 관리자 패널 -->
+    <div class="panel collapsible admin-panel" id="adminPanel">
+      <div class="panel-header" onclick="togglePanel('adminPanel')">
+        <span>⚙️ 관리자 모드</span>
+        <span class="panel-toggle">▼</span>
+      </div>
+      <div class="panel-content">
+        <div style="margin-bottom: 15px; padding: 10px; background: rgba(138, 43, 226, 0.2); border-radius: 8px; border: 1px solid #8a2be2;">
+          <div style="color: #00ffff; font-size: 12px; margin-bottom: 5px;">💡 사용 방법</div>
+          <div style="color: rgba(255,255,255,0.8); font-size: 11px; line-height: 1.5;">
+            • 맵 클릭: 새 마커 추가<br>
+            • 드래그: 마커 이동<br>
+            • Alt+클릭: 삭제 선택<br>
+            • 🔄 초기화: 변경사항 복원
+          </div>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+          <div style="color: #ff00ff; font-size: 13px; font-weight: bold; margin-bottom: 8px;">📝 변경사항</div>
+          <div id="changedMarkersPanel" style="max-height: 250px; overflow-y: auto; background: rgba(20, 0, 40, 0.4); padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 0, 255, 0.3);">
+            <div style="color: rgba(0, 255, 255, 0.5); text-align: center; padding: 20px;">변경사항 없음</div>
+          </div>
+        </div>
+
+        <button onclick="deleteSelectedMarkers()" style="width: 100%; padding: 10px; margin-top: 10px; background: linear-gradient(135deg, #ff0000, #cc0000); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);">
+          🗑️ 선택 삭제
+        </button>
+
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <button id="exportJson" class="admin-btn" style="flex: 1;">📥 JSON 다운로드</button>
+          <button id="copyJson" class="admin-btn" style="flex: 1;">📋 JSON 복사</button>
+        </div>
+
+        <button id="exportChanges" class="admin-btn" style="width: 100%; margin-top: 10px;">📤 변경사항만 내보내기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 알림 -->
+  <div id="notification" class="notification"></div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
