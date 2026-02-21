@@ -957,11 +957,35 @@ function initFilter() {
       if (searchInput) searchInput.value = '';
       if (searchResults) searchResults.innerHTML = '';
       
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
+      if (type === 'all') {
+        // 전체 버튼: 다른 선택 모두 해제
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = 'all';
+      } else {
+        // 전체 버튼 해제
+        document.querySelector('.filter-btn[data-type="all"]')?.classList.remove('active');
+        
+        // 토글: 이미 선택됐으면 해제, 아니면 추가
+        this.classList.toggle('active');
+        
+        // 선택된 타입 수집
+        const activeTypes = [];
+        document.querySelectorAll('.filter-btn.active').forEach(b => {
+          const t = b.getAttribute('data-type');
+          if (t !== 'all') activeTypes.push(t);
+        });
+        
+        // 아무것도 선택 안 됐으면 전체로
+        if (activeTypes.length === 0) {
+          document.querySelector('.filter-btn[data-type="all"]')?.classList.add('active');
+          currentFilter = 'all';
+        } else {
+          currentFilter = activeTypes;
+        }
+      }
       
-      applyFilter(type);
-      currentFilter = type;
+      applyFilter(currentFilter);
     });
   });
   
@@ -971,8 +995,12 @@ function initFilter() {
   }, 500);
 }
 
-function applyFilter(type) {
-  if (type === 'all') {
+// ============================================
+// 필터 적용
+// ============================================
+
+function applyFilter(filter) {
+  if (filter === 'all') {
     allMarkers.forEach(m => {
       if (!map.hasLayer(m)) m.addTo(map);
       m.setOpacity(m.data.faded ? 0.5 : 1);
@@ -985,8 +1013,10 @@ function applyFilter(type) {
       }
     });
   } else {
+    const types = Array.isArray(filter) ? filter : [filter];
+    
     allMarkers.forEach(m => {
-      if (m.type === type) {
+      if (types.includes(m.type)) {
         if (!map.hasLayer(m)) m.addTo(map);
         m.setOpacity(m.data.faded ? 0.5 : 1);
         if (m.dragging) {
@@ -1002,6 +1032,7 @@ function applyFilter(type) {
     });
   }
 }
+
 
 // ============================================
 // 진행도
