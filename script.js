@@ -15,7 +15,9 @@ let movedMarkers = [];
 let selectedForDelete = [];
 let reportItems = [];
 
-const mapSize = 3000;
+const mapSizeX = 3638;
+const mapSizeY = 4855;
+
 
 // 타입 정보 (이모지 포함)
 const typeInfo = {
@@ -56,7 +58,6 @@ function initSplashScreen() {
   
   let canClose = false;
   
-  // 1초 후에 닫기 허용
   setTimeout(() => {
     canClose = true;
     console.log('✅ 스플래시 닫기 가능');
@@ -74,7 +75,6 @@ function initSplashScreen() {
       splash.classList.add('hidden');
     }, 500);
     
-    // 리스너 제거
     document.removeEventListener('keydown', closeSplash);
     splash.removeEventListener('click', closeSplash);
     splash.removeEventListener('touchstart', closeSplash);
@@ -82,10 +82,7 @@ function initSplashScreen() {
     console.log('✅ 스플래시 닫힘');
   }
   
-  // 키보드는 document에
   document.addEventListener('keydown', closeSplash);
-  
-  // 클릭/터치는 splash에만
   splash.addEventListener('click', closeSplash);
   splash.addEventListener('touchstart', closeSplash, { passive: false });
 }
@@ -103,33 +100,33 @@ function initMap() {
     maxZoom: 2,
     zoomControl: false,
     attributionControl: false,
-    center: [1500, 1500],
+    center: [mapSizeY / 2, mapSizeX / 2],
     zoom: 0,
     maxBoundsViscosity: 1.0
   });
 
-  const bounds = [[0, 0], [3000, 3000]];
-  
-  L.imageOverlay('images/dragonsword_map_3000.png', bounds).addTo(map);
+  const bounds = [[0, 0], [mapSizeY, mapSizeX]];
+
+  L.imageOverlay('images/dragonsword_map_3638x4855.jpg', bounds).addTo(map);
+
   map.setMaxBounds(bounds);
-  map.setView([1500, 1500], 0);
+  map.setView([mapSizeY / 2, mapSizeX / 2], 0);
 
   L.control.zoom({
     position: 'bottomright'
   }).addTo(map);
 
+  // ★ 픽셀 좌표로 통일
   map.on('click', function(e) {
-    if (editingMarker) return;
-    
-    const x = (e.latlng.lng / 3000) * 100;
-    const y = 100 - (e.latlng.lat / 3000) * 100;
-    
+    const x = e.latlng.lng;
+    const y = mapSizeY - e.latlng.lat;
+   
     if (currentMode === 'admin') {
       createNewMarker(e.latlng, x, y);
     } else {
-      document.getElementById('reportX').value = x.toFixed(2);
-      document.getElementById('reportY').value = y.toFixed(2);
-      showNotification(`📍 좌표: (${x.toFixed(2)}, ${y.toFixed(2)})`);
+      document.getElementById('reportX').value = x.toFixed(0);
+      document.getElementById('reportY').value = y.toFixed(0);
+      showNotification(`📍 좌표: (${x.toFixed(0)}, ${y.toFixed(0)})`);
     }
   });
 
@@ -178,9 +175,10 @@ function createMarkers(data) {
   allMarkers = [];
   
   data.forEach((item, index) => {
-    const pixelX = (item.x / 100) * mapSize;
-    const pixelY = (item.y / 100) * mapSize;
-    const latLng = [mapSize - pixelY, pixelX];
+    // ★ 픽셀 좌표 직접 사용
+    const pixelX = item.x;
+    const pixelY = item.y;
+    const latLng = [mapSizeY - pixelY, pixelX];
     
     const icon = createEmojiIcon(item.type);
     
@@ -202,11 +200,41 @@ function createMarkers(data) {
     };
     marker.isNew = false;
     
-    const tooltipContent = `${marker.info.emoji} ${item.comment}`;
+    const tooltipContent = `
+      <div style="text-align: center;">
+        <div style="color: #00ffff; font-size: 11px; margin-bottom: 5px;">${typeInfo[item.type]?.name || item.type}</div>
+        <div style="font-size: 14px; margin-bottom: 5px;">${item.comment}</div>
+        <div style="color: #888; font-size: 10px;">(${item.x.toFixed(0)}, ${item.y.toFixed(0)})</div>
+      </div>
+    `;
+    
     marker.bindTooltip(tooltipContent, {
       className: 'custom-tooltip',
       direction: 'top',
-      offset: [0, -35]
+      offset: [0, -35],
+      permanent: false,
+      sticky: false
+    });
+
+    const popupContent = `
+      <div style="min-width: 200px; font-family: 'Noto Sans KR', sans-serif;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="color: #00ffff; font-weight: bold;">맵핀 정보</span>
+          <span style="color: #888; font-size: 12px;">(${item.x.toFixed(0)}, ${item.y.toFixed(0)})</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 24px;">${marker.info.emoji}</span>
+          <div>
+            <div style="color: #aaa; font-size: 11px;">${marker.info.name.replace(marker.info.emoji, '').trim()}</div>
+            <div style="color: #fff; font-size: 13px; word-wrap: break-word;">${item.comment}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    marker.bindPopup(popupContent, {
+      className: 'custom-popup',
+      maxWidth: 280
     });
     
     marker.on('click', function(e) {
@@ -215,23 +243,22 @@ function createMarkers(data) {
       }
     });
     
+    // ★ 픽셀 좌표로 통일
     marker.on('dragend', function(e) {
       if (isAdminMode) {
         const newLatLng = marker.getLatLng();
         const newX = newLatLng.lng;
-        const newY = mapSize - newLatLng.lat;
-        const newMapX = (newX / mapSize) * 100;
-        const newMapY = (newY / mapSize) * 100;
+        const newY = mapSizeY - newLatLng.lat;
         
-        marker.originalX = newMapX;
-        marker.originalY = newMapY;
+        marker.originalX = newX;
+        marker.originalY = newY;
         
         if (!marker.isNew) {
           trackMovedMarker(marker);
         }
         
         updateMarkerTooltip(marker);
-        showNotification(`📍 마커 이동: (${newMapX.toFixed(2)}, ${newMapY.toFixed(2)})`);
+        showNotification(`📍 마커 이동: (${newX.toFixed(0)}, ${newY.toFixed(0)})`);
       }
     });
     
@@ -266,17 +293,18 @@ function createNewMarker(latlng, x, y) {
   };
   marker.isNew = true;
 
+  // ★ 픽셀 좌표로 통일
   marker.on('dragend', function(e) {
     const newPos = e.target.getLatLng();
-    const newX = (newPos.lng / 3000) * 100;
-    const newY = 100 - (newPos.lat / 3000) * 100;
+    const newX = newPos.lng;
+    const newY = mapSizeY - newPos.lat;
     
     marker.originalX = newX;
     marker.originalY = newY;
     
     updateMarkerTooltip(marker);
     updateChangedMarkersPanel();
-    showNotification(`📍 마커 이동: (${newX.toFixed(2)}, ${newY.toFixed(2)})`);
+    showNotification(`📍 마커 이동: (${newX.toFixed(0)}, ${newY.toFixed(0)})`);
   });
 
   marker.on('click', function(e) {
@@ -404,7 +432,7 @@ function openEditPopup(marker) {
       </div>
       
       <div style="margin-bottom: 10px; padding: 8px; background: rgba(138, 43, 226, 0.3); border-radius: 5px; border: 1px solid #8a2be2;">
-        <small style="color: #ffffff;">📍 좌표: (${marker.originalX.toFixed(2)}, ${marker.originalY.toFixed(2)})</small>
+        <small style="color: #ffffff;">📍 좌표: (${marker.originalX.toFixed(0)}, ${marker.originalY.toFixed(0)})</small>
       </div>
       
       <button onclick="saveMarkerEdit()" 
@@ -504,10 +532,11 @@ function resetChanges() {
       }
     });
     
+    // ★ 픽셀 좌표로 통일
     movedMarkers.forEach(marker => {
-      const pixelX = (marker.initialX / 100) * mapSize;
-      const pixelY = (marker.initialY / 100) * mapSize;
-      const latLng = [mapSize - pixelY, pixelX];
+      const pixelX = marker.initialX;
+      const pixelY = marker.initialY;
+      const latLng = [mapSizeY - pixelY, pixelX];
       
       marker.setLatLng(latLng);
       marker.originalX = marker.initialX;
@@ -564,7 +593,7 @@ function updateChangedMarkersPanel() {
             ${marker.data.comment}
           </div>
           <div style="color: rgba(0, 255, 255, 0.6); font-size: 11px; margin-top: 3px;">
-            📍 (${marker.originalX.toFixed(2)}, ${marker.originalY.toFixed(2)})
+            📍 (${marker.originalX.toFixed(0)}, ${marker.originalY.toFixed(0)})
           </div>
         </div>
       `;
@@ -583,10 +612,10 @@ function updateChangedMarkersPanel() {
             ${marker.data.comment}
           </div>
           <div style="color: rgba(255, 255, 255, 0.5); font-size: 11px; margin-top: 3px;">
-            이전: (${marker.initialX.toFixed(2)}, ${marker.initialY.toFixed(2)})
+            이전: (${marker.initialX.toFixed(0)}, ${marker.initialY.toFixed(0)})
           </div>
           <div style="color: rgba(0, 255, 255, 0.6); font-size: 11px;">
-            현재: (${marker.originalX.toFixed(2)}, ${marker.originalY.toFixed(2)})
+            현재: (${marker.originalX.toFixed(0)}, ${marker.originalY.toFixed(0)})
           </div>
         </div>
       `;
@@ -1268,8 +1297,8 @@ function exportChangesByType() {
       
       movedByType[type].forEach((item, idx) => {
         output += `\n${idx + 1}. "${item.comment}"\n`;
-        output += `   이전: (${item.oldX.toFixed(2)}, ${item.oldY.toFixed(2)})\n`;
-        output += `   현재: (${item.newX.toFixed(2)}, ${item.newY.toFixed(2)})\n`;
+        output += `   이전: (${item.oldX.toFixed(0)}, ${item.oldY.toFixed(0)})\n`;
+        output += `   현재: (${item.newX.toFixed(0)}, ${item.newY.toFixed(0)})\n`;
         output += `   수정된 JSON:\n`;
         output += `   ${JSON.stringify({
           type: item.type,
@@ -1432,8 +1461,6 @@ function initMusic() {
 
   console.log('🎵 음악 컨트롤 초기화 완료');
 }
-
-
 
 // ============================================
 // 페이지 로드
