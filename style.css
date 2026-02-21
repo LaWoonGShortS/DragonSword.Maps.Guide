@@ -1,5 +1,30 @@
 /* ============================================
-   전역 리셋
+   🎨 드래곤소드 맵 - 스타일시트
+   ============================================
+   
+   목차:
+   1. 전역 설정 & CSS 변수
+   2. 기본 레이아웃
+   3. 사이드바 & 패널 공통
+   4. 모드 전환 버튼
+   5. 진행도 패널
+   6. 검색 패널
+   7. 필터 패널
+   8. 제보 패널
+   9. 관리자 패널
+   10. 알림
+   11. Leaflet 커스터마이징
+   12. 이모지 마커
+   13. 툴팁 & 팝업
+   14. 스플래시 화면
+   15. 음악 플레이어
+   16. 스크롤바
+   17. 반응형
+   
+   ============================================ */
+
+/* ============================================
+   1. 전역 설정 & CSS 변수
    ============================================ */
 
 * {
@@ -9,35 +34,49 @@
 }
 
 :root {
+  /* 메인 컬러 */
+  --neon-pink: #ff00ff;
+  --neon-cyan: #00ffff;
+  
+  /* 보조 컬러 */
   --primary: #667eea;
   --primary-dark: #5568d3;
   --success: #4caf50;
   --danger: #f44336;
   --warning: #ff9800;
+  
+  /* 배경 & 유리효과 */
   --dark: #1a1a2e;
-  --light: #f5f5f5;
+  --dark-bg: rgba(20, 0, 40, 0.95);
   --glass: rgba(255, 255, 255, 0.1);
   --glass-dark: rgba(0, 0, 0, 0.5);
+  
+  /* 그림자 & 테두리 */
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
   --border: rgba(255, 255, 255, 0.18);
-  --neon-pink: #ff00ff;
-  --neon-cyan: #00ffff;
+  --glow-pink: 0 0 20px rgba(255, 0, 255, 0.5);
+  --glow-cyan: 0 0 20px rgba(0, 255, 255, 0.5);
+  
+  /* 패널 크기 */
+  --panel-width: 320px;
+  --panel-radius: 12px;
+  --btn-radius: 8px;
 }
 
 html {
   background: #0f1419;
-  margin: 0;
-  padding: 0;
 }
 
 body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  margin: 0;
-  padding: 0;
   overflow: hidden;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', 'Noto Sans KR', Tahoma, Geneva, Verdana, sans-serif;
   height: 100vh;
 }
+
+/* ============================================
+   2. 기본 레이아웃
+   ============================================ */
 
 #map {
   position: fixed;
@@ -46,35 +85,188 @@ body {
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  pointer-events: auto;
 }
 
 /* ============================================
-   모드 전환
+   3. 사이드바 & 패널 공통
+   ============================================ */
+
+.left-sidebar {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: calc(100vh - 80px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.right-sidebar {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  width: var(--panel-width);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.left-sidebar.hidden {
+  transform: translateX(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.right-sidebar.hidden {
+  transform: translateX(120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 패널 공통 스타일 */
+.panel {
+  background: linear-gradient(135deg, rgba(20, 0, 40, 0.95), rgba(40, 0, 60, 0.95));
+  border: 2px solid rgba(255, 0, 255, 0.3);
+  border-radius: var(--panel-radius);
+  box-shadow: var(--glow-pink);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.panel:hover {
+  border-color: rgba(255, 0, 255, 0.5);
+  box-shadow: 0 0 25px rgba(255, 0, 255, 0.3);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.1));
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s ease;
+}
+
+.panel-header:hover {
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.2));
+}
+
+.panel-header span:first-child {
+  color: var(--neon-cyan);
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.panel-toggle {
+  color: var(--neon-pink);
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.panel-content {
+  padding: 15px;
+  max-height: 600px;
+  opacity: 1;
+  overflow-y: auto;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+}
+
+/* 패널 접힘 상태 */
+.panel.collapsed .panel-toggle {
+  transform: rotate(-90deg);
+}
+
+.panel.collapsed .panel-content {
+  max-height: 0;
+  padding: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* 사이드바 내 패널 위치 초기화 */
+.left-sidebar .progress-panel,
+.left-sidebar .mode-switch,
+.right-sidebar .search-box,
+.right-sidebar .filter-panel,
+.right-sidebar .report-panel,
+.right-sidebar .admin-panel {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+}
+
+/* 전체 UI 토글 버튼 */
+.toggle-all-btn {
+  position: fixed;
+  bottom: 80px;
+  right: 340px;
+  z-index: 1001;
+  width: 40px;
+  height: 50px;
+  background: linear-gradient(135deg, rgba(20, 0, 40, 0.95), rgba(40, 0, 60, 0.95));
+  border: 2px solid rgba(255, 0, 255, 0.5);
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--glow-pink);
+  transition: all 0.3s ease;
+}
+
+.toggle-all-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.3));
+  box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+}
+
+.toggle-all-btn .toggle-icon {
+  color: var(--neon-cyan);
+  font-size: 18px;
+  transition: transform 0.3s ease;
+  transform: rotate(180deg);
+}
+
+.toggle-all-btn.ui-hidden {
+  right: 10px;
+}
+
+.toggle-all-btn.ui-hidden .toggle-icon {
+  transform: rotate(0deg);
+}
+
+/* ============================================
+   4. 모드 전환 버튼
    ============================================ */
 
 .mode-switch {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-  pointer-events: auto;
   display: flex;
   gap: 10px;
-  background: rgba(20, 0, 40, 0.9);
+  background: var(--dark-bg);
   padding: 10px;
-  border-radius: 12px;
+  border-radius: var(--panel-radius);
   border: 2px solid var(--neon-pink);
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+  box-shadow: var(--glow-pink);
   backdrop-filter: blur(10px);
 }
 
 .mode-btn {
   padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass);
   color: var(--neon-cyan);
   border: 2px solid var(--neon-cyan);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
@@ -96,37 +288,11 @@ body {
 }
 
 /* ============================================
-   진행도 패널
+   5. 진행도 패널
    ============================================ */
 
-.progress-panel {
-  position: fixed;
-  top: 90px;
-  left: 20px;
-  width: 320px;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  background: rgba(20, 0, 40, 0.95);
-  padding: 20px;
-  border-radius: 12px;
-  border: 2px solid var(--neon-pink);
-  box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
-  z-index: 1000;
-  pointer-events: auto;
-  backdrop-filter: blur(10px);
-}
-
-.progress-title {
-  color: var(--neon-cyan);
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  text-align: center;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-}
-
-#progressItems {
-  margin-bottom: 15px;
+#progressPanel .panel-content {
+  max-height: calc(100vh - 250px);
 }
 
 .progress-item {
@@ -170,7 +336,6 @@ body {
 
 .progress-bar {
   height: 100%;
-  background: var(--primary);
   border-radius: 10px;
   transition: width 0.5s ease;
   box-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
@@ -182,7 +347,7 @@ body {
   background: linear-gradient(135deg, #ff6b6b, #ff0000);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
@@ -196,31 +361,16 @@ body {
 }
 
 /* ============================================
-   검색 패널
+   6. 검색 패널
    ============================================ */
-
-.search-box {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 300px;
-  z-index: 1000;
-  pointer-events: auto;
-  background: rgba(20, 0, 40, 0.95);
-  padding: 15px;
-  border-radius: 12px;
-  border: 2px solid var(--neon-cyan);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
-}
 
 .search-input {
   width: 100%;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass);
   color: var(--neon-cyan);
   border: 2px solid var(--neon-cyan);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   font-size: 14px;
   outline: none;
   transition: all 0.3s ease;
@@ -245,35 +395,24 @@ body {
 }
 
 /* ============================================
-   필터 패널
+   7. 필터 패널
    ============================================ */
 
-.filter-panel {
-  position: fixed;
-  top: 105px;
-  right: 20px;
-  width: 300px;
-  z-index: 1000;
-  pointer-events: auto;
-  background: rgba(20, 0, 40, 0.95);
-  padding: 15px;
-  border-radius: 12px;
-  border: 2px solid var(--neon-pink);
-  box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
-  backdrop-filter: blur(10px);
+.filter-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 .filter-btn {
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 100%;
+  padding: 10px 5px;
+  background: var(--glass);
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   transition: all 0.3s ease;
   text-align: center;
@@ -290,62 +429,24 @@ body {
   background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
   border-color: white;
   box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
-  color: white;
 }
 
 .filter-btn[data-type="all"] {
   grid-column: span 2;
 }
 
-.filter-btn[data-type="아"].active {
-  background: linear-gradient(135deg, #2196f3, #1976d2);
-}
-
-.filter-btn[data-type="도"].active {
-  background: linear-gradient(135deg, #757575, #424242);
-}
-
-.filter-btn[data-type="토"].active {
-  background: linear-gradient(135deg, #212121, #000000);
-  color: white;
-}
-
-.filter-btn[data-type="퀘"].active {
-  background: linear-gradient(135deg, #4caf50, #388e3c);
-}
-
-.filter-btn[data-type="달"].active {
-  background: linear-gradient(135deg, #f44336, #d32f2f);
-}
-
-.filter-btn[data-type="퍼"].active {
-  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
-}
-
-.filter-btn[data-type="새"].active {
-  background: linear-gradient(135deg, #ff9800, #f57c00);
-}
+/* 타입별 active 색상 */
+.filter-btn[data-type="아"].active { background: linear-gradient(135deg, #2196f3, #1976d2); }
+.filter-btn[data-type="도"].active { background: linear-gradient(135deg, #757575, #424242); }
+.filter-btn[data-type="토"].active { background: linear-gradient(135deg, #212121, #000000); }
+.filter-btn[data-type="퀘"].active { background: linear-gradient(135deg, #4caf50, #388e3c); }
+.filter-btn[data-type="달"].active { background: linear-gradient(135deg, #f44336, #d32f2f); }
+.filter-btn[data-type="퍼"].active { background: linear-gradient(135deg, #9c27b0, #7b1fa2); }
+.filter-btn[data-type="새"].active { background: linear-gradient(135deg, #ff9800, #f57c00); }
 
 /* ============================================
-   제보 패널
+   8. 제보 패널
    ============================================ */
-
-.report-panel {
-  position: fixed;
-  bottom: 70px;
-  right: 20px;
-  width: 360px;
-  max-height: calc(100vh - 500px);
-  overflow-y: auto;
-  background: rgba(20, 0, 40, 0.95);
-  padding: 20px;
-  border-radius: 12px;
-  border: 2px solid var(--neon-cyan);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
-  z-index: 1000;
-  pointer-events: auto;
-  backdrop-filter: blur(10px);
-}
 
 .report-title {
   color: var(--neon-pink);
@@ -369,14 +470,14 @@ body {
 .report-coord {
   width: 100%;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass);
   color: var(--neon-cyan);
   border: 2px solid var(--neon-cyan);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   font-size: 14px;
   outline: none;
   transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: inherit;
 }
 
 .report-input:focus,
@@ -397,12 +498,12 @@ body {
   background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+  box-shadow: var(--glow-pink);
 }
 
 .report-btn:hover {
@@ -417,7 +518,7 @@ body {
   text-align: center;
   padding: 10px;
   background: rgba(138, 43, 226, 0.2);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   border: 1px solid rgba(138, 43, 226, 0.4);
 }
 
@@ -447,7 +548,7 @@ body {
   background: rgba(255, 255, 255, 0.05);
   padding: 12px;
   margin-bottom: 10px;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   border-left: 3px solid var(--neon-pink);
   transition: all 0.3s ease;
 }
@@ -499,28 +600,14 @@ body {
 }
 
 /* ============================================
-   관리자 패널
+   9. 관리자 패널
    ============================================ */
 
-.admin-panel {
-  position: fixed;
-  bottom: 70px;
-  right: 20px;
-  width: 360px;
-  max-height: calc(100vh - 500px);
-  overflow-y: auto;
-  background: rgba(20, 0, 40, 0.95);
-  padding: 20px;
-  border-radius: 12px;
-  border: 2px solid var(--neon-pink);
-  box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
-  z-index: 1000;
-  pointer-events: auto;
-  backdrop-filter: blur(10px);
+.panel.admin-panel {
   display: none;
 }
 
-.admin-panel.active {
+.panel.admin-panel.active {
   display: block;
 }
 
@@ -538,12 +625,12 @@ body {
   background: linear-gradient(135deg, var(--neon-cyan), #0099cc);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+  box-shadow: var(--glow-cyan);
 }
 
 .admin-btn:hover {
@@ -556,12 +643,12 @@ body {
   overflow-y: auto;
   background: rgba(20, 0, 40, 0.4);
   padding: 15px;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   border: 1px solid rgba(255, 0, 255, 0.3);
 }
 
 /* ============================================
-   알림
+   10. 알림
    ============================================ */
 
 .notification {
@@ -572,7 +659,7 @@ body {
   background: linear-gradient(135deg, rgba(255, 0, 255, 0.95), rgba(0, 255, 255, 0.95));
   color: white;
   padding: 20px 40px;
-  border-radius: 12px;
+  border-radius: var(--panel-radius);
   font-weight: bold;
   font-size: 16px;
   z-index: 10000;
@@ -596,60 +683,46 @@ body {
 }
 
 /* ============================================
-   Leaflet 커스터마이징
+   11. Leaflet 커스터마이징
    ============================================ */
-
-.leaflet-popup-content-wrapper {
-  background: rgba(20, 0, 40, 0.95);
-  color: white;
-  border-radius: 12px;
-  border: 2px solid var(--neon-cyan);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
-}
-
-.leaflet-popup-tip {
-  background: rgba(20, 0, 40, 0.95);
-  border: 2px solid var(--neon-cyan);
-}
 
 .leaflet-container {
   background: transparent !important;
 }
 
-/* ============================================
-   스크롤바
-   ============================================ */
-
-::-webkit-scrollbar {
-  width: 10px;
+.leaflet-popup-content-wrapper {
+  background: var(--dark-bg) !important;
+  color: white !important;
+  border-radius: var(--panel-radius) !important;
+  border: 2px solid var(--neon-cyan) !important;
+  box-shadow: var(--glow-cyan) !important;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
+.leaflet-popup-tip {
+  background: var(--dark-bg) !important;
+  border: 2px solid var(--neon-cyan) !important;
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+.custom-popup .leaflet-popup-content-wrapper {
+  background: rgba(20, 20, 20, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+.custom-popup .leaflet-popup-content {
+  margin: 15px !important;
 }
 
-/* ============================================
-   줌 컨트롤 커스터마이징
-   ============================================ */
+.custom-popup .leaflet-popup-tip {
+  background: rgba(20, 20, 20, 0.95) !important;
+}
 
+/* 줌 컨트롤 */
 .leaflet-control-zoom {
   display: block !important;
   border: 2px solid var(--neon-cyan) !important;
   border-radius: 10px !important;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5) !important;
-  background: rgba(20, 0, 40, 0.95) !important;
+  box-shadow: var(--glow-cyan) !important;
+  background: var(--dark-bg) !important;
   overflow: hidden;
   backdrop-filter: blur(10px);
 }
@@ -658,32 +731,28 @@ body {
   width: 40px !important;
   height: 40px !important;
   line-height: 40px !important;
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: var(--glass) !important;
   color: var(--neon-cyan) !important;
   border: none !important;
   font-size: 20px !important;
   font-weight: bold !important;
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.8) !important;
   transition: all 0.3s ease !important;
+  text-indent: 0 !important;
 }
 
 .leaflet-control-zoom a:hover {
   background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan)) !important;
   color: white !important;
-  box-shadow: 0 0 15px rgba(255, 0, 255, 0.8) !important;
+  box-shadow: var(--glow-pink) !important;
 }
 
 .leaflet-control-zoom a:first-child {
   border-bottom: 1px solid rgba(0, 255, 255, 0.3) !important;
 }
 
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out {
-  text-indent: 0 !important;
-}
-
 /* ============================================
-   이모지 마커 스타일
+   12. 이모지 마커
    ============================================ */
 
 .emoji-marker {
@@ -704,6 +773,7 @@ body {
   filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.7));
 }
 
+/* 타입별 호버 효과 */
 .emoji-icon[data-type="아"]:hover { filter: drop-shadow(0 0 10px #2196f3); }
 .emoji-icon[data-type="도"]:hover { filter: drop-shadow(0 0 10px #757575); }
 .emoji-icon[data-type="퀘"]:hover { filter: drop-shadow(0 0 10px #4caf50); }
@@ -712,6 +782,7 @@ body {
 .emoji-icon[data-type="새"]:hover { filter: drop-shadow(0 0 10px #ff9800); }
 .emoji-icon[data-type="토"]:hover { filter: drop-shadow(0 0 10px #212121); }
 
+/* 삭제 선택 상태 */
 .emoji-icon.delete-selected {
   animation: shake 0.5s ease-in-out infinite;
   filter: drop-shadow(0 0 15px #ff0000) !important;
@@ -724,265 +795,31 @@ body {
 }
 
 /* ============================================
-   호버 툴팁 스타일
+   13. 툴팁 & 팝업
    ============================================ */
 
-.custom-tooltip {
-  background: rgba(20, 0, 40, 0.95) !important;
+.leaflet-tooltip.custom-tooltip {
+  background: var(--dark-bg) !important;
   color: #ffffff !important;
-  border: 2px solid #00ffff !important;
+  border: 2px solid var(--neon-cyan) !important;
   border-radius: 10px !important;
   padding: 10px 15px !important;
   font-size: 13px !important;
   font-weight: bold !important;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6) !important;
-  max-width: 300px !important;
+  box-shadow: var(--glow-cyan) !important;
+  white-space: nowrap !important;
+  max-width: none !important;
+  width: auto !important;
 }
 
-.leaflet-tooltip-top:before { border-top-color: #00ffff !important; }
-.leaflet-tooltip-bottom:before { border-bottom-color: #00ffff !important; }
-.leaflet-tooltip-left:before { border-left-color: #00ffff !important; }
-.leaflet-tooltip-right:before { border-right-color: #00ffff !important; }
+.leaflet-tooltip.custom-tooltip::before,
+.leaflet-tooltip-top:before { border-top-color: var(--neon-cyan) !important; }
+.leaflet-tooltip-bottom:before { border-bottom-color: var(--neon-cyan) !important; }
+.leaflet-tooltip-left:before { border-left-color: var(--neon-cyan) !important; }
+.leaflet-tooltip-right:before { border-right-color: var(--neon-cyan) !important; }
 
 /* ============================================
-   사이드바 레이아웃
-   ============================================ */
-
-.left-sidebar {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: calc(100vh - 80px);
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.right-sidebar {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: calc(100vh - 80px);
-  overflow-y: auto;
-  width: 320px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.left-sidebar.hidden {
-  transform: translateX(-120%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.right-sidebar.hidden {
-  transform: translateX(120%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ============================================
-   전체 UI 토글 버튼
-   ============================================ */
-
-.toggle-all-btn {
-  position: fixed;
-  bottom: 80px;
-  right: 340px;
-  z-index: 1001;
-  width: 40px;
-  height: 50px;
-  background: linear-gradient(135deg, rgba(20, 0, 40, 0.95), rgba(40, 0, 60, 0.95));
-  border: 2px solid rgba(255, 0, 255, 0.5);
-  border-radius: 10px 0 0 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-  transition: all 0.3s ease;
-}
-
-.toggle-all-btn:hover {
-  background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.3));
-  box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
-}
-
-.toggle-all-btn .toggle-icon {
-  color: #00ffff;
-  font-size: 18px;
-  transition: transform 0.3s ease;
-  transform: rotate(180deg);
-}
-
-.toggle-all-btn.ui-hidden {
-  right: 10px;
-}
-
-.toggle-all-btn.ui-hidden .toggle-icon {
-  transform: rotate(0deg);
-}
-
-/* ============================================
-   패널 공통 스타일 (collapsible)
-   ============================================ */
-
-.panel {
-  background: linear-gradient(135deg, rgba(20, 0, 40, 0.95), rgba(40, 0, 60, 0.95));
-  border: 2px solid rgba(255, 0, 255, 0.3);
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.panel:hover {
-  border-color: rgba(255, 0, 255, 0.5);
-  box-shadow: 0 0 25px rgba(255, 0, 255, 0.3);
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 15px;
-  background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.1));
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.3s ease;
-}
-
-.panel-header:hover {
-  background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.2));
-}
-
-.panel-header span:first-child {
-  color: #00ffff;
-  font-weight: bold;
-  font-size: 14px;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-}
-
-.panel-toggle {
-  color: #ff00ff;
-  font-size: 12px;
-  transition: transform 0.3s ease;
-}
-
-.panel.collapsed .panel-toggle {
-  transform: rotate(-90deg);
-}
-
-.panel.collapsed .panel-content {
-  max-height: 0;
-  padding: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-
-.panel.collapsed {
-  flex-shrink: 0;
-}
-
-.panel-content {
-  padding: 15px;
-  max-height: 600px;
-  opacity: 1;
-  overflow-y: auto;
-  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
-}
-
-/* ============================================
-   모드 전환 버튼 (사이드바 안에서)
-   ============================================ */
-
-.left-sidebar .mode-switch {
-  position: relative;
-  top: auto;
-  left: auto;
-  width: 100%;
-}
-
-/* ============================================
-   필터 그리드 (패널 내부용)
-   ============================================ */
-
-.filter-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.filter-grid .filter-btn {
-  width: 100%;
-  padding: 10px 5px;
-  font-size: 12px;
-}
-
-.filter-grid .filter-btn[data-type="all"] {
-  grid-column: span 2;
-}
-
-/* ============================================
-   관리자 패널 (기본 숨김)
-   ============================================ */
-
-.panel.admin-panel {
-  display: none;
-}
-
-.panel.admin-panel.active {
-  display: block;
-}
-
-/* ============================================
-   기존 패널 위치 스타일 덮어쓰기
-   ============================================ */
-
-.left-sidebar .progress-panel,
-.right-sidebar .search-box,
-.right-sidebar .filter-panel,
-.right-sidebar .report-panel,
-.right-sidebar .admin-panel {
-  position: relative;
-  top: auto;
-  left: auto;
-  right: auto;
-  bottom: auto;
-  width: 100%;
-}
-
-/* ============================================
-   진행도 패널 (통합)
-   ============================================ */
-
-#progressPanel {
-  overflow: hidden;
-}
-
-#progressPanel .panel-content {
-  max-height: calc(100vh - 250px);
-  overflow-y: auto;
-}
-
-#progressPanel.collapsed {
-  max-height: fit-content;
-}
-
-#progressPanel.collapsed .panel-content {
-  max-height: 0;
-  padding: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-
-/* ============================================
-   스플래시 화면 (게임 이미지 버전)
+   14. 스플래시 화면
    ============================================ */
 
 .splash-screen {
@@ -993,7 +830,7 @@ body {
   height: 100vh;
   z-index: 99999;
   display: flex;
-  align-items: flex-end;  /* 아래쪽 정렬 */
+  align-items: flex-end;
   justify-content: center;
   background: #000;
   opacity: 1;
@@ -1014,9 +851,9 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: flex-end;  /* 아래쪽 정렬 */
+  align-items: flex-end;
   justify-content: center;
-  padding-bottom: 80px;   /* 하단 여백 */
+  padding-bottom: 80px;
 }
 
 .splash-image-container {
@@ -1032,18 +869,14 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;  /* 로고가 있는 위쪽 중앙 보이게 */
+  object-position: center top;
   opacity: 0.9;
   animation: zoomIn 20s ease-in-out infinite alternate;
 }
 
 @keyframes zoomIn {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.05);
-  }
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
 }
 
 .splash-overlay {
@@ -1060,22 +893,15 @@ body {
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .splash-title {
   font-size: 36px;
   font-weight: bold;
   color: #ffffff;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
-               0 0 40px rgba(0, 200, 255, 0.5);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(0, 200, 255, 0.5);
   margin-bottom: 20px;
   letter-spacing: 8px;
 }
@@ -1088,7 +914,7 @@ body {
 }
 
 .splash-copyright strong {
-  color: #00ffff;
+  color: var(--neon-cyan);
 }
 
 .splash-press-key {
@@ -1107,8 +933,55 @@ body {
 }
 
 /* ============================================
-   음악 플레이어 패널
+   15. 음악 플레이어
    ============================================ */
+
+.music-btn {
+  position: fixed;
+  bottom: 8px;
+  left: calc(50% + 160px);
+  z-index: 10000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a0a2e, #2d1b4e);
+  border: 3px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  animation: musicBtnGlow 2s ease-in-out infinite;
+}
+
+@keyframes musicBtnGlow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.3);
+    border-color: var(--neon-cyan);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.4);
+    border-color: var(--neon-pink);
+  }
+}
+
+.music-btn:hover {
+  transform: scale(1.15);
+}
+
+.music-btn.playing {
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+  animation: musicPlaying 0.8s ease-in-out infinite;
+}
+
+@keyframes musicPlaying {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
 
 .music-panel {
   position: fixed;
@@ -1116,7 +989,7 @@ body {
   left: calc(50% + 80px);
   width: 280px;
   background: linear-gradient(135deg, rgba(20, 0, 40, 0.98), rgba(40, 0, 60, 0.98));
-  border: 2px solid #00ffff;
+  border: 2px solid var(--neon-cyan);
   border-radius: 15px;
   padding: 15px;
   z-index: 10001;
@@ -1145,7 +1018,7 @@ body {
 }
 
 .music-panel-header span {
-  color: #00ffff;
+  color: var(--neon-cyan);
   font-weight: bold;
   font-size: 14px;
 }
@@ -1153,9 +1026,10 @@ body {
 .music-panel-close {
   background: none;
   border: none;
-  color: #ff00ff;
+  color: var(--neon-pink);
   font-size: 18px;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .music-panel-close:hover {
@@ -1163,12 +1037,12 @@ body {
 }
 
 .music-now-playing {
-  color: #ff00ff;
+  color: var(--neon-pink);
   font-size: 13px;
   text-align: center;
   padding: 8px;
   background: rgba(255, 0, 255, 0.1);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   margin-bottom: 10px;
 }
 
@@ -1185,10 +1059,11 @@ body {
   padding: 10px;
   margin-bottom: 5px;
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   cursor: pointer;
   color: #ffffff;
   font-size: 13px;
+  transition: background 0.2s ease;
 }
 
 .music-item:hover {
@@ -1197,7 +1072,7 @@ body {
 
 .music-item.active {
   background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.3));
-  border-left: 3px solid #00ffff;
+  border-left: 3px solid var(--neon-cyan);
 }
 
 .music-controls {
@@ -1212,14 +1087,15 @@ body {
   height: 45px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
-  border: 2px solid #00ffff;
-  color: #00ffff;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
   font-size: 18px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .music-control-btn:hover {
-  background: linear-gradient(135deg, #00ffff, #ff00ff);
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
   color: #fff;
   transform: scale(1.1);
 }
@@ -1228,7 +1104,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #00ffff;
+  color: var(--neon-cyan);
 }
 
 .music-volume input[type="range"] {
@@ -1245,66 +1121,53 @@ body {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #00ffff, #ff00ff);
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
   cursor: pointer;
 }
 
 /* ============================================
-   음악 버튼
+   16. 스크롤바
    ============================================ */
 
-.music-btn {
-  position: fixed;
-  bottom: 8px;
-  left: calc(50% + 160px);
-  z-index: 10000;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1a0a2e, #2d1b4e);
-  border: 3px solid #00ffff;
-  color: #00ffff;
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.3);
-  transition: all 0.3s ease;
-  animation: musicBtnGlow 2s ease-in-out infinite;
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-@keyframes musicBtnGlow {
-  0%, 100% { 
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.3);
-    border-color: #00ffff;
-  }
-  50% { 
-    box-shadow: 0 0 30px rgba(255, 0, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.4);
-    border-color: #ff00ff;
-  }
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
 }
 
-.music-btn:hover {
-  transform: scale(1.15);
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+  border-radius: 10px;
+  box-shadow: var(--glow-pink);
 }
 
-.music-btn.playing {
-  border-color: #ff00ff;
-  color: #ff00ff;
-  animation: musicPlaying 0.8s ease-in-out infinite;
-}
-
-@keyframes musicPlaying {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+  box-shadow: var(--glow-cyan);
 }
 
 /* ============================================
-   반응형 (음악 플레이어)
+   17. 반응형
    ============================================ */
 
 @media (max-width: 768px) {
+  :root {
+    --panel-width: 280px;
+  }
+  
+  .left-sidebar,
+  .right-sidebar {
+    width: calc(100vw - 20px);
+    max-width: var(--panel-width);
+  }
+  
+  .toggle-all-btn {
+    right: calc(var(--panel-width) + 20px);
+  }
+  
   .music-panel {
     left: 50%;
     transform: translateX(-50%);
@@ -1318,5 +1181,34 @@ body {
     height: 45px;
     font-size: 20px;
   }
+  
+  .splash-title {
+    font-size: 28px;
+    letter-spacing: 4px;
+  }
+  
+  .splash-overlay {
+    padding: 20px 30px;
+    margin: 0 20px;
+  }
 }
 
+@media (max-width: 480px) {
+  :root {
+    --panel-width: 260px;
+  }
+  
+  .mode-switch {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .mode-btn {
+    padding: 8px 15px;
+    font-size: 13px;
+  }
+  
+  .splash-title {
+    font-size: 24px;
+  }
+}
