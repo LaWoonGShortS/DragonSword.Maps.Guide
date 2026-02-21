@@ -13,35 +13,74 @@ let editingMarker = null;
 let addedMarkers = [];
 let movedMarkers = [];
 let selectedForDelete = [];
+let deletedMarkers = [];
 let reportItems = [];
 
 const mapSizeX = 3638;
 const mapSizeY = 4855;
 
 
-// 타입 정보 (이모지 포함)
+// 타입 정보 (픽셀 아이콘 포함)
 const typeInfo = {
-  '아': { name: '🧰 보물상자', emoji: '🧰', color: '#2196f3', file: 'treasure' },
-  '도': { name: '🦫 마멋왕', emoji: '🦫', color: '#757575', file: 'marmot' },
-  '퀘': { name: '📜 지역의뢰', emoji: '📜', color: '#4caf50', file: 'quest' },
-  '달': { name: '🔒 봉인된상자', emoji: '🔒', color: '#f44336', file: 'sealed' },
-  '퍼': { name: '🧩 퍼즐', emoji: '🧩', color: '#9c27b0', file: 'puzzle' },
-  '새': { name: '🪺 새알', emoji: '🪺', color: '#ff9800', file: 'egg' },
-  '토': { name: '👹 돌발임무', emoji: '👹', color: '#212121', file: 'sudden' }
+  '아': { name: '보물상자', emoji: '🧰', color: '#2196f3', file: 'treasure', icon: '<img src="images/icons/chest.png" class="panel-icon">' },
+  '도': { name: '마멋왕', emoji: '🦫', color: '#757575', file: 'marmot', icon: '<img src="images/icons/marmot.png" class="panel-icon">' },
+  '퀘': { name: '지역의뢰', emoji: '📜', color: '#4caf50', file: 'quest', icon: null },
+  '달': { name: '봉인된상자', emoji: '🔒', color: '#f44336', file: 'sealed', icon: null },
+  '퍼': { name: '퍼즐', emoji: '🧩', color: '#9c27b0', file: 'puzzle', icon: '<img src="images/icons/puzzle.png" class="panel-icon">' },
+  '새': { name: '새알', emoji: '🪺', color: '#ff9800', file: 'egg', icon: null },
+  '토': { name: '돌발임무', emoji: '👹', color: '#212121', file: 'sudden', icon: null }
 };
 
-// 이모지 마커 아이콘 생성
-function createEmojiIcon(type) {
-  const emoji = typeInfo[type]?.emoji || '📍';
-  
-  return L.divIcon({
-    className: 'emoji-marker',
-    html: `<div class="emoji-icon" data-type="${type}">${emoji}</div>`,
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-    popupAnchor: [0, -35]
-  });
+// 패널용 아이콘 반환 (픽셀 아이콘 있으면 img, 없으면 이모지)
+function getTypeIcon(type) {
+  const info = typeInfo[type];
+  if (!info) return '❓';
+  return info.icon || info.emoji;
 }
+
+// 패널용 타입 이름 (아이콘 + 이름)
+function getTypeLabel(type) {
+  const info = typeInfo[type];
+  if (!info) return '❓';
+  return `${getTypeIcon(type)} ${info.name}`;
+}
+
+// 이모지 마커 아이콘 생성 (지도용)
+function createEmojiIcon(type) {
+  const iconFile = {
+    '아': 'chest.png',
+    '도': 'marmot.png',
+    '퍼': 'puzzle.png'
+  };
+
+  const info = typeInfo[type] || { emoji: '❓' };
+  const file = iconFile[type];
+
+  if (file) {
+    return L.divIcon({
+      className: 'emoji-marker',
+      html: `
+        <div class="emoji-icon" data-type="${type}">
+          <img src="images/icons/${file}" 
+               alt="${info.emoji}" 
+               style="width:28px; height:28px; image-rendering:pixelated;">
+        </div>
+      `,
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -35]
+    });
+  } else {
+    return L.divIcon({
+      className: 'emoji-marker',
+      html: `<div class="emoji-icon" data-type="${type}">${info.emoji}</div>`,
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -35]
+    });
+  }
+}
+
 
 // ============================================
 // 스플래시 화면
@@ -116,7 +155,6 @@ function initMap() {
     position: 'bottomright'
   }).addTo(map);
 
-  // ★ 픽셀 좌표로 통일
   map.on('click', function(e) {
     const x = e.latlng.lng;
     const y = mapSizeY - e.latlng.lat;
@@ -175,7 +213,6 @@ function createMarkers(data) {
   allMarkers = [];
   
   data.forEach((item, index) => {
-    // ★ 픽셀 좌표 직접 사용
     const pixelX = item.x;
     const pixelY = item.y;
     const latLng = [mapSizeY - pixelY, pixelX];
@@ -194,6 +231,7 @@ function createMarkers(data) {
     marker.initialX = item.x;
     marker.initialY = item.y;
     marker.data = {
+      id: item.id || 0,
       comment: item.comment,
       description: item.description || item.comment,
       faded: item.faded || false
@@ -202,7 +240,7 @@ function createMarkers(data) {
     
     const tooltipContent = `
       <div style="text-align: center;">
-        <div style="color: #00ffff; font-size: 11px; margin-bottom: 5px;">${typeInfo[item.type]?.name || item.type}</div>
+        <div style="color: #00ffff; font-size: 11px; margin-bottom: 5px;">${getTypeLabel(item.type)}</div>
         <div style="font-size: 14px; margin-bottom: 5px;">${item.comment}</div>
         <div style="color: #888; font-size: 10px;">(${item.x.toFixed(0)}, ${item.y.toFixed(0)})</div>
       </div>
@@ -223,9 +261,9 @@ function createMarkers(data) {
           <span style="color: #888; font-size: 12px;">(${item.x.toFixed(0)}, ${item.y.toFixed(0)})</span>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 24px;">${marker.info.emoji}</span>
+          <span style="font-size: 24px;">${getTypeIcon(item.type)}</span>
           <div>
-            <div style="color: #aaa; font-size: 11px;">${marker.info.name.replace(marker.info.emoji, '').trim()}</div>
+            <div style="color: #aaa; font-size: 11px;">${marker.info.name}</div>
             <div style="color: #fff; font-size: 13px; word-wrap: break-word;">${item.comment}</div>
           </div>
         </div>
@@ -238,12 +276,17 @@ function createMarkers(data) {
     });
     
     marker.on('click', function(e) {
-      if (!isAdminMode) {
+      if (isAdminMode) {
+        if (e.originalEvent.altKey) {
+          toggleDeleteSelection(marker);
+        } else {
+          openEditPopup(marker);
+        }
+      } else {
         toggleProgress(marker);
       }
     });
     
-    // ★ 픽셀 좌표로 통일
     marker.on('dragend', function(e) {
       if (isAdminMode) {
         const newLatLng = marker.getLatLng();
@@ -287,13 +330,13 @@ function createNewMarker(latlng, x, y) {
   marker.initialX = x;
   marker.initialY = y;
   marker.data = {
+    id: 0,
     comment: '새 마커',
     description: '새 마커',
     faded: false
   };
   marker.isNew = true;
 
-  // ★ 픽셀 좌표로 통일
   marker.on('dragend', function(e) {
     const newPos = e.target.getLatLng();
     const newX = newPos.lng;
@@ -317,7 +360,7 @@ function createNewMarker(latlng, x, y) {
     }
   });
   
-  marker.bindTooltip(`${marker.info.emoji} ${marker.data.comment}`, {
+  marker.bindTooltip(`${getTypeIcon(marker.type)} ${marker.data.comment}`, {
     className: 'custom-tooltip',
     direction: 'top',
     offset: [0, -35]
@@ -339,8 +382,6 @@ function createNewMarker(latlng, x, y) {
 // ============================================
 
 function toggleDeleteSelection(marker) {
-  if (!marker.isNew) return;
-  
   const index = selectedForDelete.indexOf(marker);
   const iconEl = marker._icon?.querySelector('.emoji-icon');
   
@@ -359,6 +400,8 @@ function toggleDeleteSelection(marker) {
     }
     showNotification(`🗑️ 삭제 선택 (선택: ${selectedForDelete.length}개)`);
   }
+  
+  updateChangedMarkersPanel();
 }
 
 // ============================================
@@ -371,10 +414,31 @@ function deleteSelectedMarkers() {
     return;
   }
   
-  if (confirm(`🗑️ 선택된 ${selectedForDelete.length}개 마커를 삭제할까요?`)) {
+  const newCount = selectedForDelete.filter(m => m.isNew).length;
+  const existingCount = selectedForDelete.filter(m => !m.isNew).length;
+  
+  let confirmMsg = `🗑️ 선택된 ${selectedForDelete.length}개 마커를 삭제할까요?`;
+  if (existingCount > 0) {
+    confirmMsg += `\n\n⚠️ 기존 마커 ${existingCount}개 포함!`;
+    confirmMsg += `\n(기존 마커는 JSON 파일에서 직접 제거해야 반영됩니다)`;
+  }
+  
+  if (confirm(confirmMsg)) {
     const count = selectedForDelete.length;
     
     selectedForDelete.forEach(marker => {
+      if (!marker.isNew) {
+        deletedMarkers.push({
+          id: marker.data.id || 0,
+          type: marker.type,
+          typeName: getTypeLabel(marker.type),
+          file: marker.info.file || typeInfo[marker.type]?.file,
+          x: marker.originalX,
+          y: marker.originalY,
+          comment: marker.data.comment
+        });
+      }
+      
       map.removeLayer(marker);
       
       const markerIndex = allMarkers.indexOf(marker);
@@ -392,7 +456,7 @@ function deleteSelectedMarkers() {
     updateProgress();
     updateChangedMarkersPanel();
     
-    showNotification(`🗑️ ${count}개 마커 삭제 완료`);
+    showNotification(`🗑️ ${count}개 마커 삭제 완료 (새 마커: ${newCount}개, 기존: ${existingCount}개)`);
   }
 }
 
@@ -406,7 +470,7 @@ function openEditPopup(marker) {
   let optionsHtml = '';
   for (let [key, value] of Object.entries(typeInfo)) {
     const selected = key === marker.type ? 'selected' : '';
-    optionsHtml += `<option value="${key}" ${selected}>${value.name}</option>`;
+    optionsHtml += `<option value="${key}" ${selected}>${getTypeIcon(key)} ${value.name}</option>`;
   }
   
   const popupContent = `
@@ -492,7 +556,7 @@ function saveMarkerEdit() {
 
 function updateMarkerTooltip(marker) {
   marker.unbindTooltip();
-  marker.bindTooltip(`${marker.info.emoji} ${marker.data.comment}`, {
+  marker.bindTooltip(`${getTypeIcon(marker.type)} ${marker.data.comment}`, {
     className: 'custom-tooltip',
     direction: 'top',
     offset: [0, -35]
@@ -518,12 +582,14 @@ function trackMovedMarker(marker) {
 // ============================================
 
 function resetChanges() {
-  if (addedMarkers.length === 0 && movedMarkers.length === 0) {
+  const totalChanges = addedMarkers.length + movedMarkers.length + deletedMarkers.length + selectedForDelete.length;
+  
+  if (totalChanges === 0) {
     showNotification('⚠️ 초기화할 변경사항이 없습니다');
     return;
   }
   
-  if (confirm(`🔄 변경된 좌표를 초기화하시겠습니까?\n\n추가: ${addedMarkers.length}개\n이동: ${movedMarkers.length}개`)) {
+  if (confirm(`🔄 모든 변경사항을 초기화하시겠습니까?\n\n추가: ${addedMarkers.length}개\n이동: ${movedMarkers.length}개\n삭제대기: ${selectedForDelete.length}개\n삭제확정: ${deletedMarkers.length}개\n\n⚠️ 삭제확정된 기존 마커는 페이지 새로고침으로 복원됩니다.`)) {
     addedMarkers.forEach(marker => {
       map.removeLayer(marker);
       const index = allMarkers.indexOf(marker);
@@ -532,7 +598,6 @@ function resetChanges() {
       }
     });
     
-    // ★ 픽셀 좌표로 통일
     movedMarkers.forEach(marker => {
       const pixelX = marker.initialX;
       const pixelY = marker.initialY;
@@ -545,14 +610,23 @@ function resetChanges() {
       updateMarkerTooltip(marker);
     });
     
+    selectedForDelete.forEach(m => {
+      m.setOpacity(1);
+      const iconEl = m._icon?.querySelector('.emoji-icon');
+      if (iconEl) {
+        iconEl.classList.remove('delete-selected');
+      }
+    });
+    
     addedMarkers = [];
     movedMarkers = [];
     selectedForDelete = [];
+    deletedMarkers = [];
     
     updateChangedMarkersPanel();
     updateProgress();
     
-    showNotification('🔄 변경사항 초기화 완료');
+    showNotification('🔄 변경사항 초기화 완료 (삭제확정 마커는 새로고침하면 복원됩니다)');
   }
 }
 
@@ -564,7 +638,7 @@ function updateChangedMarkersPanel() {
   const panel = document.getElementById('changedMarkersPanel');
   if (!panel) return;
   
-  const totalChanges = addedMarkers.length + movedMarkers.length;
+  const totalChanges = addedMarkers.length + movedMarkers.length + deletedMarkers.length + selectedForDelete.length;
   
   if (totalChanges === 0) {
     panel.innerHTML = '<div style="color: rgba(0, 255, 255, 0.5); text-align: center; padding: 20px;">변경사항 없음</div>';
@@ -581,13 +655,51 @@ function updateChangedMarkersPanel() {
     </div>
   `;
   
+  if (selectedForDelete.length > 0) {
+    html += `<div style="color: #ff6b6b; margin: 10px 0 5px 0; font-weight: bold;">⏳ 삭제 대기 (${selectedForDelete.length}개) - 🗑️ 삭제 버튼으로 확정</div>`;
+    selectedForDelete.forEach((marker) => {
+      html += `
+        <div style="background: rgba(255, 0, 0, 0.15); padding: 10px; margin-bottom: 8px; border-radius: 8px; border-left: 3px solid #ff6b6b;">
+          <div style="color: #ff6b6b; font-size: 12px; margin-bottom: 5px;">
+            ⏳ ${getTypeLabel(marker.type)} ${marker.isNew ? '(새 마커)' : '(기존 마커)'}
+          </div>
+          <div style="color: #00ffff; font-size: 13px;">
+            ${marker.data.comment}
+          </div>
+          <div style="color: rgba(0, 255, 255, 0.6); font-size: 11px; margin-top: 3px;">
+            📍 (${marker.originalX.toFixed(0)}, ${marker.originalY.toFixed(0)})
+          </div>
+        </div>
+      `;
+    });
+  }
+  
+  if (deletedMarkers.length > 0) {
+    html += `<div style="color: #ff0000; margin: 10px 0 5px 0; font-weight: bold;">🗑️ 삭제됨 (${deletedMarkers.length}개)</div>`;
+    deletedMarkers.forEach((item) => {
+      html += `
+        <div style="background: rgba(255, 0, 0, 0.1); padding: 10px; margin-bottom: 8px; border-radius: 8px; border-left: 3px solid #ff0000;">
+          <div style="color: #ff0000; font-size: 12px; margin-bottom: 5px;">
+            🗑️ ${getTypeLabel(item.type)} (id: ${item.id})
+          </div>
+          <div style="color: #00ffff; font-size: 13px;">
+            ${item.comment}
+          </div>
+          <div style="color: rgba(0, 255, 255, 0.6); font-size: 11px; margin-top: 3px;">
+            📍 (${item.x.toFixed(0)}, ${item.y.toFixed(0)}) — ${item.file}.json에서 제거 필요
+          </div>
+        </div>
+      `;
+    });
+  }
+  
   if (addedMarkers.length > 0) {
     html += `<div style="color: #ff00ff; margin: 10px 0 5px 0; font-weight: bold;">🆕 추가됨 (${addedMarkers.length}개)</div>`;
     addedMarkers.forEach((marker) => {
       html += `
         <div style="background: rgba(20, 0, 40, 0.6); padding: 10px; margin-bottom: 8px; border-radius: 8px; border-left: 3px solid #00ff00;">
           <div style="color: #00ff00; font-size: 12px; margin-bottom: 5px;">
-            🆕 ${marker.info.name}
+            🆕 ${getTypeLabel(marker.type)}
           </div>
           <div style="color: #00ffff; font-size: 13px;">
             ${marker.data.comment}
@@ -606,7 +718,7 @@ function updateChangedMarkersPanel() {
       html += `
         <div style="background: rgba(20, 0, 40, 0.6); padding: 10px; margin-bottom: 8px; border-radius: 8px; border-left: 3px solid #ffeb3b;">
           <div style="color: #ffeb3b; font-size: 12px; margin-bottom: 5px;">
-            📍 ${marker.info.name}
+            📍 ${getTypeLabel(marker.type)}
           </div>
           <div style="color: #00ffff; font-size: 13px;">
             ${marker.data.comment}
@@ -951,7 +1063,7 @@ function updateProgress() {
       <div class="progress-item" style="border-left-color: ${info.color};">
         <div class="progress-item-header">
           <div class="progress-item-name">
-            <span style="font-size: 20px;">${info.emoji}</span>
+            <span style="font-size: 20px;">${getTypeIcon(type)}</span>
             <span style="color: #ffffff;">${info.name}</span>
           </div>
           <div style="font-size: 14px; color: #aaaaaa;">
@@ -979,10 +1091,10 @@ function toggleProgress(marker) {
   
   if (marker.data.faded) {
     saved[key] = true;
-    showNotification(`✅ ${marker.info.emoji} 획득`);
+    showNotification(`✅ ${getTypeIcon(marker.type)} 획득`);
   } else {
     delete saved[key];
-    showNotification(`❌ ${marker.info.emoji} 취소`);
+    showNotification(`❌ ${getTypeIcon(marker.type)} 취소`);
   }
   
   saveProgressData(saved);
@@ -1049,19 +1161,28 @@ function initReport() {
       
       let textFormat = '【새 좌표 제보 (총 ' + reportItems.length + '개)】\n\n';
       reportItems.forEach((item, index) => {
-        textFormat += `${index + 1}. ${item.typeName} - ${item.comment}\n`;
+        textFormat += `${index + 1}. ${getTypeLabel(item.type)} - ${item.comment}\n`;
         textFormat += `   좌표: (${item.x}, ${item.y})\n\n`;
       });
       
       textFormat += '\n━━━━━━━━━━━━━━━━━━━━\n【JSON 형식】\n\n';
-      const jsonData = reportItems.map(item => ({
-        type: item.type,
-        comment: item.comment,
-        description: item.comment,
-        x: item.x,
-        y: item.y,
-        faded: false
-      }));
+      
+      const jsonData = reportItems.map((item, index) => {
+        const sameTypeMarkers = allMarkers.filter(m => m.type === item.type);
+        const maxId = sameTypeMarkers.reduce((max, m) => {
+          const markerId = m.data.id || 0;
+          return markerId > max ? markerId : max;
+        }, 0);
+
+        return {
+          id: maxId + index + 1,
+          type: item.type,
+          x: item.x,
+          y: item.y,
+          comment: item.comment,
+          faded: false
+        };
+      });
       textFormat += JSON.stringify(jsonData, null, 2);
       
       navigator.clipboard.writeText(textFormat).then(() => {
@@ -1110,7 +1231,7 @@ function updateReportList() {
     html += `
       <div class="report-item">
         <div class="report-item-header">
-          <span class="report-item-type" style="color: #ffffff;">${typeInfo[item.type].emoji} ${item.typeName}</span>
+          <span class="report-item-type" style="color: #ffffff;">${getTypeLabel(item.type)}</span>
           <button class="report-item-delete" onclick="removeReportItem(${index})">🗑️ 삭제</button>
         </div>
         <div class="report-item-comment" style="color: #ffffff;">${item.comment}</div>
@@ -1169,6 +1290,7 @@ function exportByType(mode) {
   allMarkers.forEach(m => {
     if (typeGroups[m.type]) {
       typeGroups[m.type].push({
+        id: m.data.id || 0,
         type: m.type,
         comment: m.data.comment,
         description: m.data.description,
@@ -1202,7 +1324,7 @@ function exportByType(mode) {
       
       const info = typeInfo[type];
       output += `\n${'='.repeat(50)}\n`;
-      output += `📁 ${info.file}.json (${info.name}) - ${typeGroups[type].length}개\n`;
+      output += `📁 ${info.file}.json (${getTypeLabel(type)}) - ${typeGroups[type].length}개\n`;
       output += `${'='.repeat(50)}\n`;
       output += JSON.stringify(typeGroups[type], null, 2);
       output += '\n';
@@ -1219,7 +1341,7 @@ function exportByType(mode) {
 // ============================================
 
 function exportChangesByType() {
-  const totalChanges = addedMarkers.length + movedMarkers.length;
+  const totalChanges = addedMarkers.length + movedMarkers.length + deletedMarkers.length;
   
   if (totalChanges === 0) {
     showNotification('⚠️ 변경사항이 없습니다');
@@ -1231,14 +1353,29 @@ function exportChangesByType() {
     addedByType[type] = [];
   });
   
+  const maxIdByType = {};
+  Object.keys(typeInfo).forEach(type => {
+    const sameTypeMarkers = allMarkers.filter(m => m.type === type && !m.isNew);
+    maxIdByType[type] = sameTypeMarkers.reduce((max, m) => {
+      const markerId = m.data.id || 0;
+      return markerId > max ? markerId : max;
+    }, 0);
+  });
+  
+  const counterByType = {};
+  Object.keys(typeInfo).forEach(type => {
+    counterByType[type] = 0;
+  });
+  
   addedMarkers.forEach(m => {
     if (addedByType[m.type]) {
+      counterByType[m.type]++;
       addedByType[m.type].push({
+        id: maxIdByType[m.type] + counterByType[m.type],
         type: m.type,
-        comment: m.data.comment,
-        description: m.data.description,
         x: m.originalX,
         y: m.originalY,
+        comment: m.data.comment,
         faded: false
       });
     }
@@ -1252,32 +1389,61 @@ function exportChangesByType() {
   movedMarkers.forEach(m => {
     if (movedByType[m.type]) {
       movedByType[m.type].push({
+        id: m.data.id || 0,
         type: m.type,
+        x: m.originalX,
+        y: m.originalY,
         comment: m.data.comment,
-        description: m.data.description,
+        faded: m.data.faded || false,
         oldX: m.initialX,
-        oldY: m.initialY,
-        newX: m.originalX,
-        newY: m.originalY,
-        faded: m.data.faded || false
+        oldY: m.initialY
       });
+    }
+  });
+  
+  const deletedByType = {};
+  Object.keys(typeInfo).forEach(type => {
+    deletedByType[type] = [];
+  });
+  
+  deletedMarkers.forEach(item => {
+    if (deletedByType[item.type]) {
+      deletedByType[item.type].push(item);
     }
   });
   
   let output = `【변경사항 요약】\n`;
   output += `📅 ${new Date().toLocaleString('ko-KR')}\n`;
-  output += `🆕 추가: ${addedMarkers.length}개 | 📍 이동: ${movedMarkers.length}개\n`;
+  output += `🆕 추가: ${addedMarkers.length}개 | 📍 이동: ${movedMarkers.length}개 | 🗑️ 삭제: ${deletedMarkers.length}개\n`;
   output += `${'━'.repeat(50)}\n\n`;
   
+  if (deletedMarkers.length > 0) {
+    output += `\n【🗑️ 삭제된 마커 (${deletedMarkers.length}개)】\n`;
+    output += `${'─'.repeat(50)}\n`;
+    
+    Object.keys(deletedByType).forEach(type => {
+      if (deletedByType[type].length === 0) return;
+      
+      const info = typeInfo[type];
+      output += `\n📁 ${info.file}.json 에서 제거할 항목 (${getTypeIcon(type)} ${info.name} - ${deletedByType[type].length}개)\n`;
+      output += `${'─'.repeat(30)}\n`;
+      
+      deletedByType[type].forEach((item, idx) => {
+        output += `\n${idx + 1}. id: ${item.id} — "${item.comment}"\n`;
+        output += `   좌표: (${item.x.toFixed(0)}, ${item.y.toFixed(0)})\n`;
+      });
+    });
+  }
+  
   if (addedMarkers.length > 0) {
-    output += `\n【🆕 추가된 마커 (${addedMarkers.length}개)】\n`;
+    output += `\n\n【🆕 추가된 마커 (${addedMarkers.length}개)】\n`;
     output += `${'─'.repeat(50)}\n`;
     
     Object.keys(addedByType).forEach(type => {
       if (addedByType[type].length === 0) return;
       
       const info = typeInfo[type];
-      output += `\n📁 ${info.file}.json 에 추가할 항목 (${info.name} - ${addedByType[type].length}개)\n`;
+      output += `\n📁 ${info.file}.json 에 추가할 항목 (${getTypeIcon(type)} ${info.name} - ${addedByType[type].length}개)\n`;
       output += `${'─'.repeat(30)}\n`;
       output += JSON.stringify(addedByType[type], null, 2);
       output += '\n';
@@ -1292,20 +1458,20 @@ function exportChangesByType() {
       if (movedByType[type].length === 0) return;
       
       const info = typeInfo[type];
-      output += `\n📁 ${info.file}.json 에서 수정할 항목 (${info.name} - ${movedByType[type].length}개)\n`;
+      output += `\n📁 ${info.file}.json 에서 수정할 항목 (${getTypeIcon(type)} ${info.name} - ${movedByType[type].length}개)\n`;
       output += `${'─'.repeat(30)}\n`;
       
       movedByType[type].forEach((item, idx) => {
         output += `\n${idx + 1}. "${item.comment}"\n`;
         output += `   이전: (${item.oldX.toFixed(0)}, ${item.oldY.toFixed(0)})\n`;
-        output += `   현재: (${item.newX.toFixed(0)}, ${item.newY.toFixed(0)})\n`;
+        output += `   현재: (${item.x.toFixed(0)}, ${item.y.toFixed(0)})\n`;
         output += `   수정된 JSON:\n`;
         output += `   ${JSON.stringify({
+          id: item.id,
           type: item.type,
+          x: item.x,
+          y: item.y,
           comment: item.comment,
-          description: item.description,
-          x: item.newX,
-          y: item.newY,
           faded: item.faded
         })}\n`;
       });
