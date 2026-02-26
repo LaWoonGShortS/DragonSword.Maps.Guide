@@ -1,5 +1,4 @@
-[
-{"id":1,"type":"아","x":858,"y":3045,"comment":"성벽위","found":false},
+[{"id":1,"type":"아","x":858,"y":3045,"comment":"성벽위","found":false},
 {"id":2,"type":"아","x":888,"y":2992,"comment":"대장간 뒤쪽","found":false},
 {"id":3,"type":"아","x":817,"y":2821,"comment":"왕성 입구 위쪽","found":false},
 {"id":4,"type":"아","x":786,"y":2871,"comment":"원형돔 안에","found":false},
@@ -56,9 +55,9 @@
 {"id":55,"type":"아","x":2439,"y":1641,"comment":"주변몬스터 처리 후","found":false},
 {"id":56,"type":"아","x":2460,"y":1450,"comment":"주변 몬스터 처치 후","found":false},
 {"id":57,"type":"아","x":2430,"y":1857,"comment":"상자2개 - 건물 안쪽 계단으로 올라가다보면 중간층이랑 꼭대기에 상자 1개씩 있음","found":false},
-{"id":58,"type":"아","x":1418,"y":1905,"comment":"망루 문열고 들어가면 안에","found":false},
-{"id":59,"type":"아","x":1368,"y":1900,"comment":"상자2개 - 건물안쪽 계단 올라가다보면 중간층과 꼭대기층에 상자 각각있음","found":false},
-{"id":60,"type":"아","x":1346,"y":1974,"comment":"문열고 들어가면 건물안에","found":false},
+{"id":58,"type":"아","x":1418,"y":1915,"comment":"망루 문열고 들어가면 안에","found":false},
+{"id":59,"type":"아","x":1368,"y":1906,"comment":"상자2개 - 건물안쪽 계단 올라가다보면 중간층과 꼭대기층에 상자 각각있음","found":false},
+{"id":60,"type":"아","x":1346,"y":1983,"comment":"문열고 들어가면 건물안에","found":false},
 {"id":61,"type":"아","x":2965,"y":1684,"comment":"나무 사이에","found":false},
 {"id":62,"type":"아","x":3359,"y":1549,"comment":"코멘트가 없습니다.","found":false},
 {"id":63,"type":"아","x":3350,"y":1475,"comment":"수풀사이","found":false},
@@ -168,7 +167,7 @@
 {"id":167,"type":"아","x":1276,"y":3975,"comment":"몬스터 처치 후 (위쪽 지형)","found":false},
 {"id":168,"type":"아","x":442,"y":3533,"comment":"보물지도 상자 - 바위부족기지 던전내부 상자에서 획득 (여신석1 달의열쇠1 류트5성전무 들어있음)","found":false},
 {"id":169,"type":"아","x":862,"y":2703,"comment":"낡은 집 앞 무서진 수레 옆","found":false},
-{"id":170,"type":"아","x":958,"y":2660,"comment":"발굴상자","found":false},
+{"id":170,"type":"아","x":680.5,"y":2992.5,"comment":"작은 다리 밑에 있어요.","faded": false},
 {"id":171,"type":"아","x":1467,"y":2861,"comment":"발굴상자 - 큰나무 옆","found":false},
 {"id":172,"type":"아","x":1648,"y":2697,"comment":"쓰러진 돌기둥 안쪽","found":false},
 {"id":173,"type":"아","x":3184,"y":1762,"comment":"상자근처 엔트 1마리 처치 후","found":false},
@@ -474,7 +473,7 @@
 {"id":473,"type":"아","x":1239,"y":2244,"comment":"몬스터 처치 후","found":false},
 {"id":474,"type":"아","x":1221,"y":2331,"comment":"몬스터 처치 후","found":false},
 {"id":475,"type":"아","x":1406,"y":2312,"comment":"발굴 상자","found":false},
-{"id":476,"type":"아","x":1510,"y":1940,"comment":"아래 물가쪽 나무 옆","found":false},
+{"id":476,"type":"아","x":1509,"y":1950,"comment":"아래 물가쪽 나무 옆","found":false},
 {"id":477,"type":"아","x":1462,"y":2099,"comment":"몬스터 처치후","found":false},
 {"id":478,"type":"아","x":1416,"y":2149,"comment":"몬스터 처치 후","found":false},
 {"id":479,"type":"아","x":1488,"y":2184,"comment":"몬스터 처치 후","found":false},
@@ -562,7 +561,7 @@
 {"id":561,"type":"아","x":3150,"y":1842,"comment":"던전 안 상자 - 달열쇠1개","found":false},
 {"id":562,"type":"아","x":2766,"y":1253,"comment":"던전 안 상자2개 - 달열쇠 2개","found":false},
 {"id":563,"type":"아","x":2891,"y":936,"comment":"던전 안 상자 - 달열쇠1개","found":false},
-{"id":564,"type":"아","x":1409,"y":1909,"comment":"경계자의 보물지도 상자 - 망루 꼭대기 (여신석1 달열쇠1)","found":false},
+{"id":564,"type":"아","x":1413,"y":1921,"comment":"경계자의 보물지도 상자 - 망루 꼭대기 (여신석1 달열쇠1)","found":false},
 {"id":565,"type":"아","x":2248,"y":1962,"comment":"워프 근처 수풀에","found":false},
 {"id":566,"type":"아","x":2197,"y":2090,"comment":"다리 밑","found":false},
 {"id":567,"type":"아","x":2271,"y":2086,"comment":"물속 바위 틈","found":false},
@@ -636,23 +635,709 @@
 {"id":635,"type":"아","x":1993,"y":1260,"comment":"상자2개 - 돌발임무 최초보상상자(여신석1 달열쇠1) & 일반상자","found":false},
 {"id":636,"type":"아","x":836,"y":1717,"comment":"부서진 벽 위","found":false},
 {"id":637,"type":"아","x":893,"y":1757,"comment":"나무 옆","found":false},
-{"id":638,"type":"아","x":1077,"y":1465,"comment":"동굴안쪽 아래로 떨어지면 보이는 물속 구멍으로 잠수해서 길따라가다보면 중간에 올라갈 수 있는 곳으로 올라오면 상자","found":false},
+{"id":638,"type":"아","x":1073,"y":1483,"comment":"동굴안쪽 아래로 떨어지면 보이는 물속 구멍으로 잠수해서 길따라가다보면 중간에 올라갈 수 있는 곳으로 올라오면 상자","found":false},
 {"id":639,"type":"아","x":1043,"y":1164,"comment":"돌산 위","found":false},
 {"id":640,"type":"아","x":1197,"y":1115,"comment":"발굴상자 - 산 중턱","found":false},
 {"id":641,"type":"아","x":958,"y":1165,"comment":"돌산 위","found":false},
 {"id":642,"type":"아","x":948,"y":1285,"comment":"발굴상자 - 산 위","found":false},
 {"id":643,"type":"아","x":816,"y":1096,"comment":"유산(바람개비) 옆","found":false},
-{"id":644,"type":"아","x":688,"y":943,"comment":"몬스터 처치 후","found":false},
+{"id":644,"type":"아","x":688,"y":948,"comment":"몬스터 처치 후","found":false},
 {"id":645,"type":"아","x":621,"y":917,"comment":"움푹 들어간곳 안에","found":false},
-{"id":646,"type":"아","x":522,"y":991,"comment":"코멘트가 없습니다.","found":false},
+{"id":646,"type":"아","x":520,"y":994,"comment":"코멘트가 없습니다.","found":false},
 {"id":647,"type":"아","x":551,"y":916,"comment":"코멘트가 없습니다.","found":false},
-{"id":648,"type":"아","x":487,"y":819,"comment":"코멘트가 없습니다.","found":false},
+{"id":648,"type":"아","x":487,"y":822,"comment":"코멘트가 없습니다.","found":false},
 {"id":649,"type":"아","x":613,"y":828,"comment":"코멘트가 없습니다.","found":false},
 {"id":650,"type":"아","x":912,"y":1159,"comment":"부러진 나무 옆","found":false},
 {"id":651,"type":"아","x":1427,"y":1278,"comment":"상자2개 - 돌발 & 주변몹 처치후","found":false},
 {"id":652,"type":"아","x":1534,"y":1563,"comment":"몬스터 처치 후","found":false},
 {"id":653,"type":"아","x":2118,"y":1094,"comment":"보물지도상자 - 안개속의 보물지도 (여신석1, 달열쇠1, 아리아전용카르마1 > 메인스토리 67번 보상)","found":false},
 {"id":654,"type":"아","x":2114,"y":1100,"comment":"다리위 상자 3개 - 가운데상자 여신석1개 (다리위 모든 몬스터 처치 후 획득가능)","found":false},
-{"id":655,"type":"아","x":680.5,"y":2992.5,"comment":"작은 다리 밑에 있어요.","faded": false}  
+{"id":655,"type":"아","x":680.5,"y":2992.5,"comment":"작은 다리 밑에 있어요.","faded": false},  {"id":656,"type":"상자","x":874,"y":803,"comment":"","found":false},
+  {"id":656,"type":"상자","x":774,"y":708,"comment":"","found":false},
+  {"id":657,"type":"아","x":743,"y":312,"comment":"","found":false},
+  {"id":658,"type":"아","x":737,"y":311,"comment":"","found":false},
+  {"id":659,"type":"아","x":652,"y":250,"comment":"","found":false},
+  {"id":660,"type":"아","x":861,"y":383,"comment":"","found":false},
+  {"id":661,"type":"아","x":805,"y":918,"comment":"","found":false},
+  {"id":662,"type":"아","x":901,"y":941,"comment":"","found":false},
+  {"id":663,"type":"아","x":1005,"y":1209,"comment":"","found":false},
+  {"id":664,"type":"아","x":1081,"y":1159,"comment":"","found":false},
+  {"id":665,"type":"아","x":976,"y":1239,"comment":"","found":false},
+  {"id":666,"type":"아","x":1117,"y":866,"comment":"","found":false},
+  {"id":667,"type":"아","x":1157,"y":809,"comment":"","found":false},
+  {"id":668,"type":"아","x":1218,"y":765,"comment":"","found":false},
+  {"id":669,"type":"아","x":1284,"y":921,"comment":"","found":false},
+  {"id":670,"type":"아","x":1402,"y":960,"comment":"","found":false},
+  {"id":671,"type":"아","x":1367,"y":1130,"comment":"","found":false},
+  {"id":672,"type":"아","x":1579,"y":859,"comment":"","found":false},
+  {"id":673,"type":"아","x":1566,"y":965,"comment":"","found":false},
+  {"id":674,"type":"아","x":1471,"y":1049,"comment":"","found":false},
+  {"id":675,"type":"아","x":1147,"y":1330,"comment":"","found":false},
+  {"id":676,"type":"아","x":1027,"y":1207,"comment":"","found":false},
+  {"id":677,"type":"아","x":1335,"y":1085,"comment":"","found":false},
+  {"id":678,"type":"아","x":1294,"y":1116,"comment":"","found":false},
+  {"id":679,"type":"아","x":2054,"y":961,"comment":"","found":false},
+  {"id":680,"type":"아","x":2202,"y":953,"comment":"","found":false},
+  {"id":681,"type":"아","x":2321,"y":915,"comment":"","found":false},
+  {"id":682,"type":"아","x":707,"y":2956,"comment":"","found":false},
+  {"id":683,"type":"아","x":1049,"y":2942,"comment":"","found":false},
+  {"id":684,"type":"아","x":1730,"y":3203,"comment":"","found":false},
+  {"id":685,"type":"아","x":994,"y":2906,"comment":"","found":false},
+  {"id":686,"type":"아","x":987,"y":2807,"comment":"","found":false},
+  {"id":687,"type":"아","x":1652,"y":2530,"comment":"","found":false},
+  {"id":688,"type":"아","x":1703,"y":2495,"comment":"","found":false},
+  {"id":689,"type":"아","x":2011,"y":2279,"comment":"","found":false},
+  {"id":690,"type":"아","x":728,"y":1731,"comment":"","found":false},
+  {"id":691,"type":"아","x":690,"y":1678,"comment":"","found":false},
+  {"id":692,"type":"아","x":1083,"y":1754,"comment":"","found":false},
+  {"id":693,"type":"아","x":1180,"y":1872,"comment":"","found":false},
+  {"id":694,"type":"아","x":1209,"y":1946,"comment":"","found":false},
+  {"id":695,"type":"아","x":822,"y":1493,"comment":"","found":false},
+  {"id":696,"type":"아","x":667,"y":1537,"comment":"","found":false},
+  {"id":697,"type":"아","x":682,"y":1515,"comment":"","found":false},
+  {"id":698,"type":"아","x":680,"y":1519,"comment":"","found":false},
+  {"id":699,"type":"아","x":2039,"y":2360,"comment":"","found":false},
+  {"id":700,"type":"아","x":2106,"y":2429,"comment":"","found":false},
+  {"id":701,"type":"아","x":1814,"y":2531,"comment":"","found":false},
+  {"id":702,"type":"아","x":2160,"y":2540,"comment":"","found":false},
+  {"id":703,"type":"아","x":2304,"y":2480,"comment":"","found":false},
+  {"id":704,"type":"아","x":2324,"y":2412,"comment":"","found":false},
+  {"id":705,"type":"아","x":2285,"y":2373,"comment":"","found":false},
+  {"id":706,"type":"아","x":2492,"y":2357,"comment":"","found":false},
+  {"id":707,"type":"아","x":2552,"y":2294,"comment":"","found":false},
+  {"id":708,"type":"아","x":2562,"y":2229,"comment":"","found":false},
+  {"id":709,"type":"아","x":2548,"y":2218,"comment":"","found":false},
+  {"id":710,"type":"아","x":2690,"y":2118,"comment":"","found":false},
+  {"id":711,"type":"아","x":2760,"y":2082,"comment":"","found":false},
+  {"id":712,"type":"아","x":2710,"y":1993,"comment":"","found":false},
+  {"id":713,"type":"아","x":2800,"y":1780,"comment":"","found":false},
+  {"id":714,"type":"아","x":2754,"y":1741,"comment":"","found":false},
+  {"id":715,"type":"아","x":2761,"y":1723,"comment":"","found":false},
+  {"id":716,"type":"아","x":2811,"y":1614,"comment":"","found":false},
+  {"id":717,"type":"아","x":2699,"y":1556,"comment":"","found":false},
+  {"id":718,"type":"아","x":2681,"y":1476,"comment":"","found":false},
+  {"id":719,"type":"아","x":2655,"y":1382,"comment":"","found":false},
+  {"id":720,"type":"아","x":2655,"y":1332,"comment":"","found":false},
+  {"id":721,"type":"아","x":2655,"y":1267,"comment":"","found":false},
+  {"id":722,"type":"아","x":2711,"y":1069,"comment":"","found":false},
+  {"id":723,"type":"아","x":2629,"y":1009,"comment":"","found":false},
+  {"id":724,"type":"아","x":2693,"y":865,"comment":"","found":false},
+  {"id":725,"type":"아","x":2646,"y":872,"comment":"","found":false},
+  {"id":726,"type":"아","x":2487,"y":692,"comment":"","found":false},
+  {"id":727,"type":"아","x":2489,"y":698,"comment":"","found":false},
+  {"id":728,"type":"아","x":2114,"y":919,"comment":"","found":false},
+  {"id":729,"type":"아","x":462,"y":946,"comment":"","found":false},
+  {"id":730,"type":"아","x":589,"y":1031,"comment":"","found":false},
+  {"id":731,"type":"아","x":1879,"y":970,"comment":"","found":false},
+  {"id":732,"type":"아","x":1047,"y":2940,"comment":"천막?에 있어요.","faded": false},
+  {"id":733,"type":"아","x":741,"y":2775,"comment":"왕성 밖에 풀밭에 있어요","faded": false},
+  {"id":734,"type":"아","x":890,"y":3018,"comment":"성밖에 수풀에 있어요.","faded": false},
+  {"id":735,"type":"아","x":758,"y":933,"comment":"몬스터 처치 후","faded":false},
+  {"id":736,"type":"아","x":781,"y":1085,"comment": "에오나유산 근처 돌벽 꼭대기","faded": false},
+  {"id":737,"type":"아","x":627.2497655534856,"y":1120.500530575474,"comment":"몬스터 처치 후","faded": false},
+  {"id":738,"type":"아","x": 499,"y":1199,"comment":"발굴 상자 - 돌산 위에 있어요.","faded": false},
+  {"id":739,"type":"아","x":558,"y":1308,"comment":"몬스터 처치 후","faded": false},
+  {
+    "id": 740,
+    "type": "아",
+    "x": 543,
+    "y": 1391,
+    "comment":"몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 741,
+    "type":"아",
+    "x": 510,
+    "y": 1481,
+    "comment":"몬스터 처치 후",
+    "faded":false
+  },
+  {
+    "id": 742,
+    "type":"아",
+    "x":651,
+    "y":1435,
+    "comment":"길 옆에 구멍안에 있어요.",
+    "faded":false
+  },
+  {
+    "id": 743,
+    "type":"아",
+    "x":704,
+    "y":1346,
+    "comment":"몬스터 처치후 - 여신석 1개",
+    "faded":false
+  },
+  {
+    "id": 744,
+    "type":"아",
+    "x":1673,
+    "y":1476.4999996185306,
+    "comment":"나무 사이",
+    "faded":false
+  },
+  {
+    "id":745,
+    "type":"아",
+    "x":1636,
+    "y":1623,
+    "comment":"몬스터 처치 후",
+    "faded":false
+  },
+  {
+    "id":746,
+    "type":"아",
+    "x":1650,
+    "y":1762,
+    "comment":"상자",
+    "faded":false
+  },
+  {
+    "id": 747,
+    "type":"아",
+    "x":1546,
+    "y":1868,
+    "comment":"상자",
+    "faded":false
+  },
+  {
+    "id":748,
+    "type":"아",
+    "x":1357,
+    "y":1851,
+    "comment":"발굴상자 - 언덕 올라가면 나무 사이에 있어요.",
+    "faded":false
+  },
+  {
+    "id":749,
+    "type":"아",
+    "x":1359,
+    "y":1808,
+    "comment":"몬스터 처치 후",
+    "faded":false
+  },
+  {
+    "id":750,
+    "type":"아",
+    "x":1401,
+    "y":1801,
+    "comment":"워프 뒤쪽 동굴 안에 있어요.",
+    "faded":false
+  },
+  {
+    "id":751,
+    "type":"아",
+    "x":1436,
+    "y":1821,
+    "comment":"동굴 속에 천막에 있어요.",
+    "faded":false
+  },
+  {
+    "id":752,
+    "type":"아",
+    "x":1436,
+    "y":1804,
+    "comment":"동굴속에 천막 뒤에 나무 구조물 위에 있어요.",
+    "faded":false
+  },
+  {
+    "id":753,
+    "type":"아",
+    "x":2597,
+    "y":668,
+    "comment":"몬스터 처치 후 - 여신석 1개",
+    "faded":false
+  },
+  {
+    "id":754,
+    "type":"아",
+    "x":2592,
+    "y":669,
+    "comment":"몬스터 처치 후",
+    "faded":false
+  },
+  {
+    "id":755,
+    "type":"아",
+    "x":2463,
+    "y":5694,
+    "comment":"발굴상자",
+    "faded":false
+  },
+  {
+    "id":756,
+    "type":"아",
+    "x":2501,
+    "y":535,
+    "comment":"건물 뒤쪽에 있어요.",
+    "faded":false
+  },
+  {  
+    "id":757,
+    "type":"아",
+    "x":714,
+    "y":1211,
+    "comment":"건물 뒤쪽에 있어요.",
+    "faded":false
+  },
+  {  
+    "id":758,
+    "type":"아",
+    "x":877,
+    "y":812,
+    "comment":"건물 뒤쪽에 있어요.",
+    "faded":false
+  },
+  {  
+    "id":759,
+    "type":"아",
+    "x":732,
+    "y":488,
+    "comment":"건물 뒤쪽에 있어요.",
+    "faded":false
+  },
+{  
+    "id":760,
+    "type":"아",
+    "x":778,
+    "y":601,
+    "comment":"건물 뒤쪽에 있어요.",
+    "faded":false
+  },
+  {  
+    "id":761,
+    "type":"아",
+    "x":778,
+    "y":716,
+    "comment":"건물 뒤쪽에 있어요.",
+    "faded":false
+  },
+  {  
+    "id":762,
+    "type":"아",
+    "x":878,
+    "y":812,
+    "comment":"건물 뒤쪽에 있어요.",
+    "faded":false
+  },
+   {
+    "id": 763,
+    "type": "아",
+    "x": 1512.7786824904117,
+    "y": 1225.3858817910914,
+    "comment": "드래곤 처치시",
+    "faded": false
+  },
+  {
+    "id": 764,
+    "type": "아",
+    "x": 1443.7894670300739,
+    "y": 1350.3662062378312,
+    "comment": "산 꼭대기에 있어요.",
+    "faded": false
+  },
+  {
+    "id": 765,
+    "type": "아",
+    "x": 1546.7733683694187,
+    "y": 1365.36384517144,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 766,
+    "type": "아",
+    "x": 1631.7600830669364,
+    "y": 1155.3969001009168,
+    "comment": "고목 옆에",
+    "faded": false
+  },
+  {
+    "id": 767,
+    "type": "아",
+    "x": 1827.729448722389,
+    "y": 1203.8892659862522,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 768,
+    "type": "아",
+    "x": 1757.2404677085656,
+    "y": 1239.883599426913,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 769,
+    "type": "아",
+    "x": 2482,
+    "y": 927.4987407645913,
+    "comment": "나무 사이에",
+    "faded": false
+  },
+  {
+    "id": 770,
+    "type": "아",
+    "x": 2418.1371549445557,
+    "y": 1001.9210616803202,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 771,
+    "type": "아",
+    "x": 2420.2498046279047,
+    "y": 1041.251062479876,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 772,
+    "type": "아",
+    "x": 2454.499960925581,
+    "y": 1050.4996064889347,
+    "comment": "상자 있어요.",
+    "faded": false
+  },
+  {
+    "id": 773,
+    "type": "아",
+    "x": 2363.576783100282,
+    "y": 1046.7063202717627,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 774,
+    "type": "아",
+    "x": 2364.3266658770244,
+    "y": 1055.4549429830345,
+    "comment": "천막 아래 있어요.",
+    "faded": false
+  },
+  {
+    "id": 775,
+    "type": "아",
+    "x": 2386.8231491793085,
+    "y": 1090.1994731792279,
+    "comment": "나무 사이에 있어요.",
+    "faded": false
+  },
+   {
+    "id": 776,
+    "type": "아",
+    "x": 1512.7786824904117,
+    "y": 1225.3858817910914,
+    "comment": "드래곤 처치시",
+    "faded": false
+  },
+  {
+    "id": 777,
+    "type": "아",
+    "x": 1443.7894670300739,
+    "y": 1350.3662062378312,
+    "comment": "산 꼭대기에 있어요.",
+    "faded": false
+  },
+  {
+    "id": 778,
+    "type": "아",
+    "x": 1546.7733683694187,
+    "y": 1365.36384517144,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 759,
+    "type": "아",
+    "x": 1631.7600830669364,
+    "y": 1155.3969001009168,
+    "comment": "고목 옆에",
+    "faded": false
+  },
+  {
+    "id": 760,
+    "type": "아",
+    "x": 1827.729448722389,
+    "y": 1203.8892659862522,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 761,
+    "type": "아",
+    "x": 1757.2404677085656,
+    "y": 1239.883599426913,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 762,
+    "type": "아",
+    "x": 2482,
+    "y": 927.4987407645913,
+    "comment": "나무 사이에",
+    "faded": false
+  },
+  {
+    "id": 763,
+    "type": "아",
+    "x": 2418.1371549445557,
+    "y": 1001.9210616803202,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 764,
+    "type": "아",
+    "x": 2420.2498046279047,
+    "y": 1041.251062479876,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 765,
+    "type": "아",
+    "x": 2454.499960925581,
+    "y": 1050.4996064889347,
+    "comment": "상자 있어요.",
+    "faded": false
+  },
+  {
+    "id": 766,
+    "type": "아",
+    "x": 2363.576783100282,
+    "y": 1046.7063202717627,
+    "comment": "몬스터 처치 후",
+    "faded": false
+  },
+  {
+    "id": 767,
+    "type": "아",
+    "x": 2364.3266658770244,
+    "y": 1055.4549429830345,
+    "comment": "천막 아래 있어요.",
+    "faded": false
+  },
+  {
+    "id": 768,
+    "type": "아",
+    "x": 2386.8231491793085,
+    "y": 1090.1994731792279,
+    "comment": "나무 사이에 있어요.",
+    "faded": false
+  },
+ {
+    "id": 769,
+    "type": "아",
+    "x": 2098.6968587900706,
+    "y": 1129.3380755286262,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 770,
+    "type": "아",
+    "x": 2128.999960925581,
+    "y": 1099.7516675229172,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 771,
+    "type": "아",
+    "x": 2156.4378325992666,
+    "y": 988.045250508253,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 772,
+    "type": "아",
+    "x": 2100.4465852691374,
+    "y": 976.7918396659225,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 773,
+    "type": "아",
+    "x": 2078.9998046279047,
+    "y": 915.7520465053985,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 774,
+    "type": "아",
+    "x": 2112.7502344465142,
+    "y": 917.750682168466,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 775,
+    "type": "아",
+    "x": 2141.2501172232573,
+    "y": 911.7510611509474,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 776,
+    "type": "아",
+    "x": 2113.7497655534858,
+    "y": 935.5005305754735,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 777,
+    "type": "아",
+    "x": 2125.4496721482433,
+    "y": 886.0187217345701,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 778,
+    "type": "아",
+    "x": 2563.8397556576083,
+    "y": 709.3023217904683,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 779,
+    "type": "아",
+    "x": 2467.8547602345293,
+    "y": 564.258359822652,
+    "comment": "발굴상자",
+    "faded": false
+  },
+  {
+    "id": 780,
+    "type": "아",
+    "x": 2103.5003907441906,
+    "y": 1405.502198098391,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 781,
+    "type": "아",
+    "x": 1866.4697954740623,
+    "y": 1650.216520156729,
+    "comment": "발굴상자",
+    "faded": false
+  },
+  {
+    "id": 782,
+    "type": "아",
+    "x": 1957.7501172232573,
+    "y": 1685.000682168466,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 783,
+    "type": "아",
+    "x": 1972.000039074419,
+    "y": 1749.001364336932,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 784,
+    "type": "아",
+    "x": 1958.2158880321556,
+    "y": 1785.996990348216,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 785,
+    "type": "아",
+    "x": 1702.0020318697916,
+    "y": 876.0012127439395,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 786,
+    "type": "아",
+    "x": 1702.0026570604964,
+    "y": 908.0033350458343,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 787,
+    "type": "아",
+    "x": 1733.8183821001826,
+    "y": 898.3761320752456,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 788,
+    "type": "아",
+    "x": 1389.9998437023237,
+    "y": 806.0036382318194,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 789,
+    "type": "아",
+    "x": 991,
+    "y": 804.0039414178045,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 790,
+    "type": "아",
+    "x": 993.9991403627805,
+    "y": 1104.1894303745548,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 791,
+    "type": "아",
+    "x": 1009.4967177487986,
+    "y": 1104.1894303745548,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 792,
+    "type": "아",
+    "x": 1066.4878087812513,
+    "y": 1517.314646186337,
+    "comment": "바위 사이",
+    "faded": false
+  },
+  {
+    "id": 793,
+    "type": "아",
+    "x": 1028.9936699441112,
+    "y": 1394.2773543101885,
+    "comment": "상자",
+    "faded": false
+  },
+  {
+    "id": 794,
+    "type": "아",
+    "x": 1241.2040484831787,
+    "y": 1094.1230630768696,
+    "comment": "상자",
+    "faded": false
+  }
+
+
 ]
 
