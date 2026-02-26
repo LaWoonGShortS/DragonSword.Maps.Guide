@@ -1122,10 +1122,10 @@ function toggleProgress(marker) {
   
   if (marker.data.faded) {
     saved[key] = true;
-    showNotification(`✅ ${getTypeIcon(marker.type)} 획득`);
+    showNotification(`✅ ${typeInfo[marker.type]?.emoji || '❓'} 획득`);
   } else {
     delete saved[key];
-    showNotification(`❌ ${getTypeIcon(marker.type)} 취소`);
+    showNotification(`❌ ${typeInfo[marker.type]?.emoji || '❓'} 취소`);
   }
   
   saveProgressData(saved);
