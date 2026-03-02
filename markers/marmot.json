@@ -403,5 +403,21 @@
     "x": 1419,
     "y": 1257,
     "faded": false
-  }
+  },
+{"id":46,"type":"도","x":773,"y":3604,"comment":"미니게임 - 시간내 비행하기","found":false},
+{"id":47,"type":"도","x":774,"y":3760,"comment":"미니게임 - 마멋 5마리 찾기","found":false},
+{"id":48,"type":"도","x":2125,"y":3984,"comment":"미니게임 - 마멋 15마리 잡기 (아리아추천)","found":false},
+{"id":49,"type":"도","x":2273,"y":3771,"comment":"미니게임 - 마멋 20마리 잡기 (아리아 추천)","found":false},
+{"id":50,"type":"도","x":2458,"y":4151,"comment":"미니게임 - 마멋 15마리 잡기 (아리아 추천)","found":false},
+{"id":51,"type":"도","x":1637,"y":3049,"comment":"미니게임 - 시간내 비행하기","found":false},
+{"id":52,"type":"도","x":1504,"y":3143,"comment":"미니게임 - 파동피하기","found":false},
+{"id":53,"type":"도","x":774,"y":1255,"comment":"미니게임 - 시간내 도착","found":false},
+{"id":54,"type":"도","x":780,"y":1095,"comment":"미니게임 - 마멋 5마리 찾기","found":false},
+{"id":55,"type":"도","x":1212,"y":1021,"comment":"미니게임 - 마멋 15마리 잡기","found":false},
+{"id":56,"type":"도","x":1787,"y":1359,"comment":"미니게임 - 시간내 도착","found":false},
+{"id":57,"type":"도","x":1498,"y":1717,"comment":"미니게임 - 파동피하기","found":false},
+{"id":58,"type":"도","x":1641,"y":1819,"comment":"미니게임 - 시간내 도착","found":false},
+{"id":59,"type":"도","x":2270,"y":1090,"comment":"미니게임 - 마멋 20마리 잡기","found":false},
+{"id":60,"type":"도","x":2125,"y":882,"comment":"미니게임 - 마멋 15마리 잡기(여신상 뒷쪽)","found":false},
+{"id":61,"type":"도","x":1504,"y":3143,"comment":"미니게임 - 마멋 15마리 잡기","found":false}
 ]
