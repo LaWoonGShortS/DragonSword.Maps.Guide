@@ -925,5 +925,8 @@
     "x": 210,
     "y": 3758,
     "faded": false
-  }
+  },
+{"id":104,"type":"새","x":666,"y":1886,"comment":"지붕과 나무구조물 붙어있는 곳","found":false},
+{"id":105,"type":"새","x":759,"y":1970,"comment":"지붕위","found":false},
+{"id":106,"type":"새","x":1784,"y":1592,"comment":"코멘트가 없습니다.","found":false}
 ]
