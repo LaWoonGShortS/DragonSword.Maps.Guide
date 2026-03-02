@@ -645,7 +645,7 @@
 {"id":645,"type":"아","x":621,"y":917,"comment":"움푹 들어간곳 안에","found":false},
 {"id":646,"type":"아","x":520,"y":994,"comment":"코멘트가 없습니다.","found":false},
 {"id":647,"type":"아","x":551,"y":916,"comment":"코멘트가 없습니다.","found":false},
-{"id":648,"type":"아","x":487,"y":822,"comment":"코멘트가 없습니다.","found":false},
+{"id":648,"type":"아","x":496,"y":796,"comment":"제단 뒤에 상자","found":false},
 {"id":649,"type":"아","x":613,"y":828,"comment":"코멘트가 없습니다.","found":false},
 {"id":650,"type":"아","x":912,"y":1159,"comment":"부러진 나무 옆","found":false},
 {"id":651,"type":"아","x":1427,"y":1278,"comment":"상자2개 - 돌발 & 주변몹 처치후","found":false},
@@ -658,7 +658,7 @@
   {"id":658,"type":"아","x":737,"y":311,"comment":"","found":false},
   {"id":659,"type":"아","x":652,"y":250,"comment":"","found":false},
   {"id":660,"type":"아","x":861,"y":383,"comment":"","found":false},
-  {"id":661,"type":"아","x":805,"y":918,"comment":"","found":false},
+  {"id":661,"type":"아","x":805,"y":918,"comment":"몬스터 처치 후","found":false},
   {"id":662,"type":"아","x":901,"y":941,"comment":"","found":false},
   {"id":663,"type":"아","x":1005,"y":1209,"comment":"","found":false},
   {"id":664,"type":"아","x":1081,"y":1159,"comment":"","found":false},
@@ -693,9 +693,9 @@
   {"id":693,"type":"아","x":1180,"y":1872,"comment":"","found":false},
   {"id":694,"type":"아","x":1209,"y":1946,"comment":"","found":false},
   {"id":695,"type":"아","x":822,"y":1493,"comment":"","found":false},
-  {"id":696,"type":"아","x":667,"y":1537,"comment":"","found":false},
-  {"id":697,"type":"아","x":682,"y":1515,"comment":"","found":false},
-  {"id":698,"type":"아","x":680,"y":1519,"comment":"","found":false},
+  {"id":696,"type":"아","x":667,"y":1537,"comment":"물가 부분 윗쪽에 ","found":false},
+  {"id":697,"type":"아","x":646,"y":245,"comment":"상자","found":false},
+  {"id":698,"type":"아","x":680,"y":1519,"comment":"몬스터 처치 후","found":false},
   {"id":699,"type":"아","x":2039,"y":2360,"comment":"","found":false},
   {"id":700,"type":"아","x":2106,"y":2429,"comment":"","found":false},
   {"id":701,"type":"아","x":1814,"y":2531,"comment":"","found":false},
@@ -719,12 +719,12 @@
   {"id":719,"type":"아","x":2655,"y":1382,"comment":"","found":false},
   {"id":720,"type":"아","x":2655,"y":1332,"comment":"","found":false},
   {"id":721,"type":"아","x":2655,"y":1267,"comment":"","found":false},
-  {"id":722,"type":"아","x":2711,"y":1069,"comment":"","found":false},
-  {"id":723,"type":"아","x":2629,"y":1009,"comment":"","found":false},
-  {"id":724,"type":"아","x":2693,"y":865,"comment":"","found":false},
+  {"id":722,"type":"아","x":491,"y":868,"comment":"돌발임무 최초보상 상자 - 여신석 1개","found":false},
+  {"id":723,"type":"아","x":487,"y":825,"comment":"상자","found":false},
+  {"id":724,"type":"아","x":2654,"y":728,"comment":"돌산에 위치한 드래곤 머리뼈 아래 ","found":false},
   {"id":725,"type":"아","x":2646,"y":872,"comment":"","found":false},
-  {"id":726,"type":"아","x":2487,"y":692,"comment":"","found":false},
-  {"id":727,"type":"아","x":2489,"y":698,"comment":"","found":false},
+
+  {"id":727,"type":"아","x":2489,"y":698,"comment":"드래곤 뼈속에","found":false},
   {"id":728,"type":"아","x":2114,"y":919,"comment":"","found":false},
   {"id":729,"type":"아","x":462,"y":946,"comment":"","found":false},
   {"id":730,"type":"아","x":589,"y":1031,"comment":"","found":false},
@@ -732,7 +732,7 @@
   {"id":732,"type":"아","x":1047,"y":2940,"comment":"천막?에 있어요.","faded": false},
   {"id":733,"type":"아","x":741,"y":2775,"comment":"왕성 밖에 풀밭에 있어요","faded": false},
   {"id":734,"type":"아","x":890,"y":3018,"comment":"성밖에 수풀에 있어요.","faded": false},
-  {"id":735,"type":"아","x":758,"y":933,"comment":"몬스터 처치 후","faded":false},
+  {"id":735,"type":"아","x":758,"y":933,"comment":"큰 나무 아래","faded":false},
   {"id":736,"type":"아","x":781,"y":1085,"comment": "에오나유산 근처 돌벽 꼭대기","faded": false},
   {"id":737,"type":"아","x":627.2497655534856,"y":1120.500530575474,"comment":"몬스터 처치 후","faded": false},
   {"id":738,"type":"아","x": 499,"y":1199,"comment":"발굴 상자 - 돌산 위에 있어요.","faded": false},
@@ -884,9 +884,9 @@
   {  
     "id":758,
     "type":"아",
-    "x":877,
-    "y":812,
-    "comment":"건물 뒤쪽에 있어요.",
+    "x":885,
+    "y":949,
+    "comment":"상자",
     "faded":false
   },
   {  
@@ -894,7 +894,7 @@
     "type":"아",
     "x":732,
     "y":488,
-    "comment":"건물 뒤쪽에 있어요.",
+    "comment":"몬스터 처치 후 - 여신석 1개",
     "faded":false
   },
 {  
@@ -902,7 +902,7 @@
     "type":"아",
     "x":778,
     "y":601,
-    "comment":"건물 뒤쪽에 있어요.",
+    "comment":"몬스터 처치 후 - 여신석 1개",
     "faded":false
   },
   {  
@@ -910,7 +910,7 @@
     "type":"아",
     "x":778,
     "y":716,
-    "comment":"건물 뒤쪽에 있어요.",
+    "comment":"상자",
     "faded":false
   },
   {  
@@ -918,7 +918,7 @@
     "type":"아",
     "x":878,
     "y":812,
-    "comment":"건물 뒤쪽에 있어요.",
+    "comment":"나무 근처 발굴상자",
     "faded":false
   },
    {
@@ -1204,9 +1204,9 @@
   {
     "id": 778,
     "type": "아",
-    "x": 2563.8397556576083,
-    "y": 709.3023217904683,
-    "comment": "상자",
+    "x": 2564,
+    "y": 709,
+    "comment": "용 유골 아래",
     "faded": false
   },
   {
@@ -1293,7 +1293,7 @@
     "id": 789,
     "type": "아",
     "x": 991,
-    "y": 804.0039414178045,
+    "y": 804,
     "comment": "상자",
     "faded": false
   },
