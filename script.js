@@ -22,14 +22,15 @@ const mapSizeY = 4855;
 
 // 타입 정보 (픽셀 아이콘 포함)
 const typeInfo = {
-  '아': { name: '보물상자', emoji: '🧰', color: '#2196f3', file: 'treasure', icon: '<img src="images/icons/chest.png" class="panel-icon">' },
-  '도': { name: '마멋왕', emoji: '🦫', color: '#757575', file: 'marmot', icon: '<img src="images/icons/marmot.png" class="panel-icon">' },
-  '퀘': { name: '지역의뢰', emoji: '📜', color: '#4caf50', file: 'quest', icon: null },
-  '달': { name: '봉인된상자', emoji: '🔒', color: '#f44336', file: 'sealed', icon: null },
-  '퍼': { name: '퍼즐', emoji: '🧩', color: '#9c27b0', file: 'puzzle', icon: '<img src="images/icons/puzzle.png" class="panel-icon">' },
-  '새': { name: '새알', emoji: '🪺', color: '#ff9800', file: 'egg', icon: null },
-  '토': { name: '돌발임무', emoji: '👹', color: '#212121', file: 'sudden', icon: null }
+  '아': { name: '보물상자', emoji: '🧰', color: '#2196f3', file: 'treasure', icon: '<img src="images/icons/chest.png" class="panel-icon">', cursor: 'images/cursors/castella.cur' },
+  '도': { name: '마멋왕', emoji: '🦫', color: '#757575', file: 'marmot', icon: '<img src="images/icons/marmot.png" class="panel-icon">', cursor: 'images/cursors/seris.cur' },
+  '퀘': { name: '지역의뢰', emoji: '📜', color: '#4caf50', file: 'quest', icon: null, cursor: 'images/cursors/ann.cur' },
+  '달': { name: '봉인된상자', emoji: '🔒', color: '#f44336', file: 'sealed', icon: null, cursor: 'images/cursors/ninian.cur' },
+  '퍼': { name: '퍼즐', emoji: '🧩', color: '#9c27b0', file: 'puzzle', icon: '<img src="images/icons/puzzle.png" class="panel-icon">', cursor: 'images/cursors/aria.cur' },
+  '새': { name: '새알', emoji: '🪺', color: '#ff9800', file: 'egg', icon: null, cursor: 'images/cursors/lute.cur' },
+  '토': { name: '돌발임무', emoji: '👹', color: '#212121', file: 'sudden', icon: null, cursor: 'images/cursors/johnny.cur' }
 };
+
 
 // 패널용 아이콘 반환 (픽셀 아이콘 있으면 img, 없으면 이모지)
 function getTypeIcon(type) {
@@ -155,9 +156,15 @@ function initMap() {
     position: 'bottomright'
   }).addTo(map);
 
-  map.on('click', function(e) {
+    map.on('click', function(e) {
     const x = e.latlng.lng;
     const y = mapSizeY - e.latlng.lat;
+    
+    // 맵 범위 밖이면 무시
+    if (x < 0 || x > mapSizeX || y < 0 || y > mapSizeY) {
+      showNotification('⚠️ 맵 범위 밖입니다');
+      return;
+    }
    
     if (currentMode === 'admin') {
       createNewMarker(e.latlng, x, y);
@@ -167,6 +174,24 @@ function initMap() {
       showNotification(`📍 좌표: (${x.toFixed(0)}, ${y.toFixed(0)})`);
     }
   });
+
+    // ===== 좌표 오버레이 =====
+  const coordDiv = document.createElement('div');
+  coordDiv.id = 'coord-display';
+  coordDiv.textContent = 'X: — Y: —';
+  coordDiv.style.cssText = 'position:fixed;bottom:60px;left:10px;background:rgba(0,0,0,.85);color:#0f0;padding:8px 14px;border-radius:8px;font-size:14px;z-index:10000;pointer-events:none;font-family:monospace';
+  document.body.appendChild(coordDiv);
+
+  map.on('mousemove', function(e) {
+    const px = Math.round(e.latlng.lng);
+    const py = Math.round(mapSizeY - e.latlng.lat);
+    coordDiv.textContent = 'X: ' + px + '  Y: ' + py;
+  });
+
+  map.on('mouseout', function() {
+    coordDiv.textContent = 'X: — Y: —';
+  });
+
 
   console.log('✅ 맵 초기화 완료');
   loadMarkers();
@@ -958,25 +983,19 @@ function initFilter() {
       if (searchResults) searchResults.innerHTML = '';
       
       if (type === 'all') {
-        // 전체 버튼: 다른 선택 모두 해제
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         currentFilter = 'all';
       } else {
-        // 전체 버튼 해제
         document.querySelector('.filter-btn[data-type="all"]')?.classList.remove('active');
-        
-        // 토글: 이미 선택됐으면 해제, 아니면 추가
         this.classList.toggle('active');
         
-        // 선택된 타입 수집
         const activeTypes = [];
         document.querySelectorAll('.filter-btn.active').forEach(b => {
           const t = b.getAttribute('data-type');
           if (t !== 'all') activeTypes.push(t);
         });
         
-        // 아무것도 선택 안 됐으면 전체로
         if (activeTypes.length === 0) {
           document.querySelector('.filter-btn[data-type="all"]')?.classList.add('active');
           currentFilter = 'all';
@@ -986,6 +1005,9 @@ function initFilter() {
       }
       
       applyFilter(currentFilter);
+      
+      // 커서 변경
+      updateCursor(currentFilter, type);
     });
   });
   
@@ -994,6 +1016,35 @@ function initFilter() {
     if (defaultBtn) defaultBtn.click();
   }, 500);
 }
+// ============================================
+// 커서 변경
+// ============================================
+
+function updateCursor(filter, clickedType) {
+  const mapEl = document.getElementById('map');
+  
+  if (filter === 'all') {
+    // 전체: 기본 커서
+    mapEl.style.cursor = 'url("images/cursors/castella.cur"), auto';
+  } else {
+    const types = Array.isArray(filter) ? filter : [filter];
+    
+    if (types.length === 1) {
+      // 하나만 선택: 그 타입 커서
+      const info = typeInfo[types[0]];
+      if (info && info.cursor) {
+        mapEl.style.cursor = 'url("' + info.cursor + '"), auto';
+      }
+    } else {
+      // 다중 선택: 방금 클릭한 타입 커서
+      const info = typeInfo[clickedType];
+      if (info && info.cursor) {
+        mapEl.style.cursor = 'url("' + info.cursor + '"), auto';
+      }
+    }
+  }
+}
+
 
 // ============================================
 // 필터 적용
@@ -1032,6 +1083,7 @@ function applyFilter(filter) {
     });
   }
 }
+
 
 
 // ============================================
@@ -1659,6 +1711,7 @@ function initMusic() {
   console.log('🎵 음악 컨트롤 초기화 완료');
 }
 
+
 // ============================================
 // 페이지 로드
 // ============================================
@@ -1668,3 +1721,5 @@ document.addEventListener('DOMContentLoaded', function() {
   initSplashScreen();
   initMap();
 });
+
+
