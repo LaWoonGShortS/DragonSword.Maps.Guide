@@ -592,5 +592,12 @@
     "x": 1450,
     "y": 1262,
     "faded": false
-  }
+  },
+{"id":67,"type":"퀘","x":1356,"y":1062,"comment":"지역임무 - 타일러 도와주기","found":false},
+{"id":68,"type":"퀘","x":1662,"y":935,"comment":"지역임무 - 타일러 도와주기","found":false},
+{"id":69,"type":"퀘","x":1289,"y":1575,"comment":"지역임무 - 타일러 도와주기","found":false},
+{"id":70,"type":"퀘","x":2094,"y":1788,"comment":"지역임무 - 아가씨 구하기","found":false},
+{"id":71,"type":"퀘","x":640,"y":1183,"comment":"지역임무 - 아가씨 구하기","found":false},
+{"id":72,"type":"퀘","x":909,"y":1578,"comment":"지역임무 - 병사 도와주기","found":false},
+{"id":73,"type":"퀘","x":2294,"y":1025,"comment":"지역임무 - 병사 도와주기","found":false}
 ]
