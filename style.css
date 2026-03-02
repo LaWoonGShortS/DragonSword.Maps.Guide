@@ -1242,3 +1242,7 @@ body {
   display: inline-block;
   margin-right: 2px;
 }
+/* 마커 위에서도 맵 커서 유지 */
+.leaflet-marker-icon {
+  cursor: inherit !important;
+}
